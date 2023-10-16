@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 //
 
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:house_app/configuration/routing/app_screens.dart';
 import 'package:house_app/core/extensions/date_time_extension.dart';
 import 'package:house_app/core/extensions/int_extension.dart';
+import 'package:house_app/features/home_screen/domian/models/monthly_statistics.dart';
 
 enum ButtonCategory {
   month,
@@ -102,12 +102,12 @@ class ExpenseCategoryWithPercent {
       ExpenseCategoryWithPercent(
         category: ButtonCategory.day,
         amount: statistics.day,
-        percent: (allowedPerDay * 100).div(statistics.day),
+        percent: (statistics.day * 100).div(allowedPerDay),
       ),
       ExpenseCategoryWithPercent(
         category: ButtonCategory.week,
         amount: statistics.week,
-        percent: (allowedPerDay * 7 * 100).div(statistics.week),
+        percent: (statistics.week * 100).div(allowedPerDay * 7),
       ),
       ExpenseCategoryWithPercent(
         category: ButtonCategory.month,
@@ -121,33 +121,4 @@ class ExpenseCategoryWithPercent {
       ),
     ];
   }
-}
-
-class MonthlyStatistics {
-  final int income;
-  final int day;
-  final int week;
-  final int month;
-  MonthlyStatistics({
-    required this.income,
-    required this.day,
-    required this.week,
-    required this.month,
-  });
-
-  factory MonthlyStatistics.fromList(List<ExpenseCategory> event) =>
-      MonthlyStatistics(
-        income: event
-            .firstWhere((element) => element.category == ButtonCategory.inCome)
-            .amount,
-        day: event
-            .firstWhere((element) => element.category == ButtonCategory.day)
-            .amount,
-        week: event
-            .firstWhere((element) => element.category == ButtonCategory.week)
-            .amount,
-        month: event
-            .firstWhere((element) => element.category == ButtonCategory.month)
-            .amount,
-      );
 }

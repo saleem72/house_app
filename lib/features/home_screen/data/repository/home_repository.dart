@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:house_app/core/data/local_db/app_database.dart';
 import 'package:house_app/core/data/local_db/daos/entry_dao/entry_dao.dart';
+import 'package:house_app/features/home_screen/domian/models/monthly_statistics.dart';
 
 import '../../domian/models/button_category.dart';
 import '../../domian/repository/i_home_repository.dart';
@@ -13,8 +14,8 @@ class HomeRepository implements IHomeRepository {
   final EntryDAO _dao;
 
   StreamSubscription<List<ExpenseCategory>>? _subscription;
-  final StreamController<List<ExpenseCategoryWithPercent>> _controller =
-      StreamController<List<ExpenseCategoryWithPercent>>.broadcast();
+  final StreamController<MonthlyStatistics> _controller =
+      StreamController<MonthlyStatistics>.broadcast();
   HomeRepository({
     required AppDatabase db,
   }) : _dao = db.entryDAO;
@@ -27,11 +28,13 @@ class HomeRepository implements IHomeRepository {
   }
 
   @override
-  Stream<List<ExpenseCategoryWithPercent>> subcribe() {
+  Stream<MonthlyStatistics> subcribe() {
     _subscription = _dao.watchStatistics().listen((event) {
-      final data = ExpenseCategoryWithPercent.fromList(event);
+      // final data = ExpenseCategoryWithPercent.fromList(event);
+      final data = MonthlyStatistics.fromList(event);
       _controller.sink.add(data);
     }, onError: (error) {
+      // ignore: avoid_print
       print(error.toString());
     });
     return _controller.stream;

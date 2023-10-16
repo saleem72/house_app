@@ -4,17 +4,17 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:house_app/features/home_screen/domian/models/monthly_statistics.dart';
 
-import '../../domian/models/button_category.dart';
 import '../../domian/repository/i_home_repository.dart';
 
-part 'home_event.dart';
-part 'home_state.dart';
+part 'statistic_event.dart';
+part 'statistic_state.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
+class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
   final IHomeRepository _repository;
-  StreamSubscription<List<ExpenseCategoryWithPercent>>? _subscription;
-  HomeBloc({
+  StreamSubscription<MonthlyStatistics>? _subscription;
+  StatisticBloc({
     required IHomeRepository repository,
   })  : _repository = repository,
         super(HomeInitial()) {
@@ -23,20 +23,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<_HomeNewListEvent>(_onNewList);
   }
 
-  _onFetchData(HomeFetchDataEvent event, Emitter<HomeState> emit) async {
+  _onFetchData(HomeFetchDataEvent event, Emitter<StatisticState> emit) async {
     emit(HomeLoading());
-    final data = await _repository.fetchData();
-    emit(HomeSuccess(expenses: data));
+    // final data = await _repository.fetchData();
+    // emit(HomeSuccess(expenses: data));
   }
 
   FutureOr<void> _onSubscribe(
-      HomeSubscribeEvent event, Emitter<HomeState> emit) {
+      HomeSubscribeEvent event, Emitter<StatisticState> emit) {
     _subscription = _repository.subcribe().listen((event) {
       add(_HomeNewListEvent(expenses: event));
     });
   }
 
-  FutureOr<void> _onNewList(_HomeNewListEvent event, Emitter<HomeState> emit) {
+  FutureOr<void> _onNewList(
+      _HomeNewListEvent event, Emitter<StatisticState> emit) {
     emit(HomeSuccess(expenses: event.expenses));
   }
 

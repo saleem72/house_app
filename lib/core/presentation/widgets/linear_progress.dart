@@ -37,6 +37,7 @@ class LinearProgressBar extends StatelessWidget {
     return Row(
       children: [
         Expanded(
+          flex: percent > 90 ? 1 : percent,
           child: Text(
             '$percent%',
             style: context.textTheme.bodySmall?.copyWith(
@@ -44,9 +45,15 @@ class LinearProgressBar extends StatelessWidget {
               // fontSize: 12,
               fontWeight: percent > 100 ? FontWeight.bold : FontWeight.w400,
             ),
+            textAlign: TextAlign.center,
           ),
         ),
-        Text('100%')
+        Expanded(
+            flex: percent > 90 ? 0 : 100 - percent,
+            child: const Text(
+              '100%',
+              textAlign: TextAlign.end,
+            ))
       ],
     );
   }

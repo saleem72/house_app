@@ -10,23 +10,23 @@ import 'package:house_app/core/domian/usecases/date_formatter.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:house_app/core/extensions/int_extension.dart';
 import 'package:house_app/core/presentation/widgets/add_new_entry_dialog.dart';
-import 'package:house_app/dependancy_injection.dart';
-import 'package:house_app/features/home_screen/data/repository/home_repository.dart';
-// import 'package:intl/intl.dart';
+import 'package:house_app/features/home_screen/domian/models/monthly_statistics.dart';
 
 import 'domian/models/button_category.dart';
-import 'presentation/home_bloc/home_bloc.dart';
+import 'presentation/statistic_bloc/statistic_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeBloc(repository: HomeRepository(db: locator()))
-        ..add(HomeSubscribeEvent()),
-      child: const _HomeScreen(),
-    );
+    // return BlocProvider(
+    //   create: (context) =>
+    //       StatisticBloc(repository: HomeRepository(db: locator()))
+    //         ..add(HomeSubscribeEvent()),
+    //   child: const _HomeScreen(),
+    // );
+    return const _HomeScreen();
   }
 }
 
@@ -57,27 +57,10 @@ class _HomeScreen extends StatelessWidget {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 32),
-                  child: Opacity(
-                    opacity: 0.5,
-                    child: Image.asset(
-                      'assets/images/image2.png',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          BlocBuilder<HomeBloc, HomeState>(
+          BlocBuilder<StatisticBloc, StatisticState>(
             builder: (context, state) {
               return switch (state) {
-                HomeInitial() => _content(context, state.expenses),
+                HomeInitial() => _emptyStatistic(),
                 HomeLoading() =>
                   const Center(child: CircularProgressIndicator()),
                 HomeSuccess() => _content(context, state.expenses)
@@ -89,8 +72,11 @@ class _HomeScreen extends StatelessWidget {
     );
   }
 
-  Column _content(
-      BuildContext context, List<ExpenseCategoryWithPercent> expenses) {
+  Widget _emptyStatistic() {
+    return const SizedBox.shrink();
+  }
+
+  Column _content(BuildContext context, MonthlyStatistics status) {
     var size = context.mediaQuery.size;
 
     /*24 is for notification bar on Android*/
@@ -98,7 +84,7 @@ class _HomeScreen extends StatelessWidget {
     final double widgetWidth = size.width;
     final double gridWidth = widgetWidth - 8;
     const double ratio = 0.75;
-    // final double
+    final expenses = status.list();
     return Column(
       children: [
         const SizedBox(height: 32),
@@ -123,22 +109,6 @@ class _HomeScreen extends StatelessWidget {
             },
           ),
         ),
-        // const SizedBox(height: 16),
-        // TextButton(
-        //   onPressed: () {
-        //     final date = DateTime.now();
-        //     final weeks = date.monthWeaks();
-        //     int i = 1;
-        //     for (final week in weeks) {
-        //       print('$i: ${AppFormatter().fullDate(week.first)}');
-        //       i++;
-        //     }
-        //   },
-        //   style: TextButton.styleFrom(
-        //       backgroundColor: context.colorScheme.secondaryContainer,
-        //       foregroundColor: context.colorScheme.onSecondaryContainer),
-        //   child: const Text('get weeks'),
-        // ),
       ],
     );
   }
@@ -228,23 +198,30 @@ class MainButton extends StatelessWidget {
                                 )
                         ],
                       ),
-                      // Row(
-                      //   children: [
-                      //     Text('Status: '),
-                      //     SizedBox(width: 8),
-                      //     Flexible(
-                      //       child: Text(
-                      //         'Excced',
-                      //         style: context.textTheme.bodyMedium?.copyWith(
-                      //           color: Colors.red,
-                      //           fontWeight: FontWeight.bold,
-                      //         ),
-                      //         maxLines: 1,
-                      //         overflow: TextOverflow.ellipsis,
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
+                      expense?.category == ButtonCategory.inCome
+                          ? Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Left: ',
+                                  style:
+                                      context.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  AppFormatter()
+                                      .currency(expense?.percent ?? 0),
+                                  style:
+                                      context.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                )
+                              ],
+                            )
+                          : const SizedBox.shrink(),
                       isHistory
                           ? const SizedBox.shrink()
                           : Text(

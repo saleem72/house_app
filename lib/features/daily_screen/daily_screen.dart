@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_app/core/domian/models/entry.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:house_app/core/presentation/widgets/core_widgets.dart';
-import 'package:house_app/core/presentation/widgets/linear_progress.dart';
-import 'package:house_app/core/presentation/widgets/progress_circle.dart';
 import 'package:house_app/dependancy_injection.dart' as di;
 import 'package:house_app/features/daily_screen/presentation/bloc/daily_bloc.dart';
+
+import 'presentation/widgets/daily_linear_progress_bar.dart';
 
 class DailyScreen extends StatelessWidget {
   const DailyScreen({super.key});
@@ -30,21 +30,15 @@ class _DailyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Text(context.translate.day),
-            const SizedBox(width: 8),
-            const ProgressCircle(percent: 20),
-          ],
-        ),
+        // title: Row(
+        //   children: [
+        //     Text(context.translate.day),
+        //     const SizedBox(width: 8),
+        //     const ProgressCircle(percent: 20),
+        //   ],
+        // ),
+        title: Text(context.translate.day),
         actions: [
-          // TextButton(
-          //   onPressed: () => _dialogBuilder(context),
-          //   child: const Icon(
-          //     Icons.add_circle,
-          //     // size: 20,
-          //   ),
-          // ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 0),
             child: AppDatePicker(
@@ -89,10 +83,7 @@ class _DailyScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          const LinearProgressBar(
-            percent: 80,
-            borderWidth: 10,
-          ),
+          const DailyLinearProgressBar(),
           const SizedBox(height: 8),
           Expanded(
               child: EntrisGrid(

@@ -5,6 +5,8 @@ import 'package:house_app/configuration/routing/app_router.dart';
 import 'package:house_app/configuration/routing/app_screens.dart';
 import 'package:house_app/core/presentation/blocs/locale_bloc/locale_bloc.dart';
 import 'package:house_app/dependancy_injection.dart' as di;
+import 'package:house_app/features/home_screen/data/repository/home_repository.dart';
+import 'package:house_app/features/home_screen/presentation/statistic_bloc/statistic_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,28 +20,41 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<LocaleBloc>(
-      create: (context) => di.locator(),
-      child: BlocBuilder<LocaleBloc, LocaleState>(
-        buildWhen: (previous, current) => previous.appLang != current.appLang,
-        builder: (context, state) {
-          return MaterialApp(
-            title: 'Flutter Demo',
-            debugShowCheckedModeBanner: false,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-              fontFamily:
-                  state.appLang.languageCode == 'en' ? "Poppins" : "Cairo",
-            ),
-            locale: state.appLang,
-            onGenerateRoute: AppRouter.generate,
-            initialRoute: AppScreens.initial,
-          );
-        },
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LocaleBloc>(
+          create: (context) => di.locator(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              StatisticBloc(repository: HomeRepository(db: di.locator()))
+                ..add(HomeSubscribeEvent()),
+        ),
+      ],
+      child: _buildApp(),
+    );
+  }
+
+  BlocBuilder<LocaleBloc, LocaleState> _buildApp() {
+    return BlocBuilder<LocaleBloc, LocaleState>(
+      buildWhen: (previous, current) => previous.appLang != current.appLang,
+      builder: (context, state) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+            fontFamily:
+                state.appLang.languageCode == 'en' ? "Poppins" : "Cairo",
+          ),
+          locale: state.appLang,
+          onGenerateRoute: AppRouter.generate,
+          initialRoute: AppScreens.initial,
+        );
+      },
     );
   }
 }

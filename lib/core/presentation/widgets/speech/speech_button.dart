@@ -62,6 +62,7 @@ class _IconListeningButtonState extends State<IconListeningButton> {
 
           if (!isListening) {
             Future.delayed(const Duration(seconds: 1), () {
+              // ignore: avoid_print
               print(text);
             });
           }
