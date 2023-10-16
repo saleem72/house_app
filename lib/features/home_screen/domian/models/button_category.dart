@@ -85,10 +85,12 @@ class ExpenseCategoryWithPercent {
   final ButtonCategory category;
   final int amount;
   final int percent;
+  final int left;
   const ExpenseCategoryWithPercent({
     required this.category,
     required this.amount,
     required this.percent,
+    required this.left,
   });
 
   static List<ExpenseCategoryWithPercent> fromList(
@@ -103,21 +105,25 @@ class ExpenseCategoryWithPercent {
         category: ButtonCategory.day,
         amount: statistics.day,
         percent: (statistics.day * 100).div(allowedPerDay),
+        left: 0,
       ),
       ExpenseCategoryWithPercent(
         category: ButtonCategory.week,
         amount: statistics.week,
         percent: (statistics.week * 100).div(allowedPerDay * 7),
+        left: 0,
       ),
       ExpenseCategoryWithPercent(
         category: ButtonCategory.month,
         amount: statistics.month,
         percent: (statistics.month * 100).div(statistics.income),
+        left: 0,
       ),
       ExpenseCategoryWithPercent(
         category: ButtonCategory.inCome,
         amount: statistics.income,
         percent: statistics.income - statistics.month,
+        left: 0,
       ),
     ];
   }

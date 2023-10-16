@@ -198,30 +198,25 @@ class MainButton extends StatelessWidget {
                                 )
                         ],
                       ),
-                      expense?.category == ButtonCategory.inCome
-                          ? Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Left: ',
-                                  style:
-                                      context.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Text(
-                                  AppFormatter()
-                                      .currency(expense?.percent ?? 0),
-                                  style:
-                                      context.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                  ),
-                                )
-                              ],
-                            )
-                          : const SizedBox.shrink(),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Left: ',
+                            style: context.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Text(
+                            AppFormatter().currency(expense?.left ?? 0),
+                            style: context.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          )
+                        ],
+                      ),
                       isHistory
                           ? const SizedBox.shrink()
                           : Text(

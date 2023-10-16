@@ -1,5 +1,7 @@
 //
 
+import 'dart:math';
+
 import 'package:equatable/equatable.dart';
 import 'package:house_app/core/extensions/date_time_extension.dart';
 import 'package:house_app/core/extensions/int_extension.dart';
@@ -13,6 +15,8 @@ class MonthlyStatistics extends Equatable {
   final int dayPercent;
   final int weekPercent;
   final int monthPercent;
+  final int leftForDay;
+  final int leftForWeek;
   final int left;
   const MonthlyStatistics({
     required this.income,
@@ -23,6 +27,8 @@ class MonthlyStatistics extends Equatable {
     required this.weekPercent,
     required this.monthPercent,
     required this.left,
+    required this.leftForDay,
+    required this.leftForWeek,
   });
 
   factory MonthlyStatistics.fromList(List<ExpenseCategory> event) {
@@ -51,6 +57,8 @@ class MonthlyStatistics extends Equatable {
       weekPercent: (week * 100).div(allowedPerDay * 7),
       monthPercent: (month * 100).div(income),
       left: income - month,
+      leftForDay: max(allowedPerDay - day, 0),
+      leftForWeek: max(allowedPerDay * 7 - week, 0),
     );
   }
 
@@ -71,21 +79,23 @@ class MonthlyStatistics extends Equatable {
           category: ButtonCategory.day,
           amount: day,
           percent: dayPercent,
+          left: leftForDay,
         ),
         ExpenseCategoryWithPercent(
-          category: ButtonCategory.week,
-          amount: week,
-          percent: weekPercent,
-        ),
+            category: ButtonCategory.week,
+            amount: week,
+            percent: weekPercent,
+            left: leftForWeek),
         ExpenseCategoryWithPercent(
-          category: ButtonCategory.month,
-          amount: month,
-          percent: (month * 100).div(income),
-        ),
+            category: ButtonCategory.month,
+            amount: month,
+            percent: (month * 100).div(income),
+            left: income - month),
         ExpenseCategoryWithPercent(
           category: ButtonCategory.inCome,
           amount: income,
-          percent: income - month,
+          percent: (month * 100).div(income),
+          left: income - month,
         ),
       ];
 }
