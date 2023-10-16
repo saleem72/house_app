@@ -27,14 +27,18 @@ class _AppDatePickerState extends State<AppDatePicker> with RestorationMixin {
         _restorableDatePickerRouteFuture.present();
       },
       style: TextButton.styleFrom(
-          padding:
-              const EdgeInsets.only(top: 8, bottom: 12, left: 16, right: 16)),
+        padding: const EdgeInsets.only(top: 8, bottom: 12, left: 16, right: 16),
+        foregroundColor: Colors.grey.shade700,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(AppFormatter().date(_selectedDate.value)),
           const SizedBox(width: 4),
-          const Icon(Icons.calendar_month)
+          Icon(
+            Icons.calendar_month,
+            color: Colors.grey.shade700,
+          ),
         ],
       ),
     );

@@ -85,6 +85,12 @@ class WeekExpansesCard extends StatelessWidget {
                     style: context.textTheme.titleMedium?.copyWith(),
                   ),
                   // week.expenses > 0 ?
+                  Column(
+                    children: [
+                      ...week.days.map((e) =>
+                          Text(AppFormatter().dayOfDate(e) + e.day.toString()))
+                    ],
+                  ),
                   Text(
                     '${AppFormatter().currency(week.expenses)} ${context.currency}',
                     style: context.textTheme.titleMedium?.copyWith(),

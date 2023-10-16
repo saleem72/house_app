@@ -41,3 +41,5 @@ final class AddEntryDescriptionChangedEvent extends AddEntryEvent {
 }
 
 final class AddEntrySubmitEvent extends AddEntryEvent {}
+
+final class AddIncomeSubmitEvent extends AddEntryEvent {}

@@ -12,9 +12,15 @@ import '../../domian/input_formatters/currency_formatter.dart';
 import 'core_widgets.dart';
 
 class AddNewEntryProvider extends StatelessWidget {
-  const AddNewEntryProvider({super.key, this.initialDate, this.entry});
+  const AddNewEntryProvider({
+    super.key,
+    this.initialDate,
+    this.entry,
+    this.isIncome = false,
+  });
   final DateTime? initialDate;
   final Entry? entry;
+  final bool isIncome;
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AddEntryBloc>(
@@ -26,6 +32,7 @@ class AddNewEntryProvider extends StatelessWidget {
       child: AddNewEntryDialog(
         initialDate: initialDate ?? DateTime.now(),
         entry: entry,
+        isIncome: isIncome,
       ),
     );
   }
@@ -36,9 +43,11 @@ class AddNewEntryDialog extends StatefulWidget {
     super.key,
     required this.initialDate,
     this.entry,
+    required this.isIncome,
   });
   final DateTime initialDate;
   final Entry? entry;
+  final bool isIncome;
   @override
   State<AddNewEntryDialog> createState() => _AddNewEntryDialogState();
 }
@@ -85,9 +94,7 @@ class _AddNewEntryDialogState extends State<AddNewEntryDialog> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  widget.entry == null
-                      ? context.translate.new_entry_title
-                      : context.translate.update_entry_title,
+                  _getTitleText(),
                   style: context.textTheme.titleMedium?.copyWith(
                     color: context.colorScheme.onPrimary,
                   ),
@@ -156,18 +163,13 @@ class _AddNewEntryDialogState extends State<AddNewEntryDialog> {
                         ),
                         child: Text(context.translate.cancel),
                         onPressed: () {
+                          _amount.clear();
+                          _description.clear();
                           Navigator.of(context).pop();
                         },
                       ),
                       AddEntryAddButton(
-                        onPressed: () {
-                          _amount.clear();
-                          _description.clear();
-                          context
-                              .read<AddEntryBloc>()
-                              .add(AddEntrySubmitEvent());
-                          // Navigator.of(context).pop();
-                        },
+                        onPressed: () => _doAction(),
                       ),
                     ],
                   ),
@@ -178,6 +180,26 @@ class _AddNewEntryDialogState extends State<AddNewEntryDialog> {
         ],
       ),
     );
+  }
+
+  String _getTitleText() {
+    return widget.isIncome
+        ? context.translate.income_title
+        : widget.entry == null
+            ? context.translate.new_entry_title
+            : context.translate.update_entry_title;
+  }
+
+  _doAction() {
+    {
+      _amount.clear();
+      _description.clear();
+
+      context.read<AddEntryBloc>().add(
+            widget.isIncome ? AddIncomeSubmitEvent() : AddEntrySubmitEvent(),
+          );
+      // Navigator.of(context).pop();
+    }
   }
 }
 

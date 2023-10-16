@@ -14,6 +14,8 @@
     "week": "اسبوع",
     "month": "شهر",
     "total": "المجموع",
+    "income": "الدخل",
+    "income_title": "اضافة دخل جديد",
     "new_entry_title": "اضافة مصروف جديد",
     "update_entry_title": "تعديل مصدوف",
     "cancel": "الغاء",
@@ -21,5 +23,7 @@
     "ok": "موافق",
     "week_no": "رقم الاسبوع",
     "warning": "تحذير",
-    "deletion_confim_message": "هل انت متأكد انك تريد حذف هذا"
+    "deletion_confim_message": "هل انت متأكد انك تريد حذف هذا",
+    "speech_error": "ميزة التعرف على الصوت",
+    "speech_error_message": "عذراً حدث خطأ اثناء تفعيل ميزة التعرف على الصوت\nالرجاء المحاولة لاحقاً"
 }

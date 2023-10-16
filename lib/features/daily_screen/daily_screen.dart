@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_app/core/domian/models/entry.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:house_app/core/presentation/widgets/core_widgets.dart';
+import 'package:house_app/core/presentation/widgets/linear_progress.dart';
+import 'package:house_app/core/presentation/widgets/progress_circle.dart';
 import 'package:house_app/dependancy_injection.dart' as di;
 import 'package:house_app/features/daily_screen/presentation/bloc/daily_bloc.dart';
 
@@ -28,7 +30,13 @@ class _DailyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.translate.day),
+        title: Row(
+          children: [
+            Text(context.translate.day),
+            const SizedBox(width: 8),
+            const ProgressCircle(percent: 20),
+          ],
+        ),
         actions: [
           // TextButton(
           //   onPressed: () => _dialogBuilder(context),
@@ -81,6 +89,11 @@ class _DailyScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
+          const LinearProgressBar(
+            percent: 80,
+            borderWidth: 10,
+          ),
+          const SizedBox(height: 8),
           Expanded(
               child: EntrisGrid(
             entries: entries,

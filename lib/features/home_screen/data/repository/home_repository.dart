@@ -13,23 +13,26 @@ class HomeRepository implements IHomeRepository {
   final EntryDAO _dao;
 
   StreamSubscription<List<ExpenseCategory>>? _subscription;
-  final StreamController<List<ExpenseCategory>> _controller =
-      StreamController<List<ExpenseCategory>>.broadcast();
+  final StreamController<List<ExpenseCategoryWithPercent>> _controller =
+      StreamController<List<ExpenseCategoryWithPercent>>.broadcast();
   HomeRepository({
     required AppDatabase db,
   }) : _dao = db.entryDAO;
 
   @override
-  Future<List<ExpenseCategory>> fetchData() async {
+  Future<List<ExpenseCategoryWithPercent>> fetchData() async {
     // final temp = await _dao.summary();
 
     return [];
   }
 
   @override
-  Stream<List<ExpenseCategory>> subcribe() {
+  Stream<List<ExpenseCategoryWithPercent>> subcribe() {
     _subscription = _dao.watchStatistics().listen((event) {
-      _controller.sink.add(event);
+      final data = ExpenseCategoryWithPercent.fromList(event);
+      _controller.sink.add(data);
+    }, onError: (error) {
+      print(error.toString());
     });
     return _controller.stream;
   }

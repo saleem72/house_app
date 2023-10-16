@@ -8,6 +8,8 @@ import 'package:house_app/configuration/routing/app_screens.dart';
 import 'package:house_app/core/domian/usecases/date_formatter.dart';
 
 import 'package:house_app/core/extensions/build_context_extension.dart';
+import 'package:house_app/core/extensions/int_extension.dart';
+import 'package:house_app/core/presentation/widgets/add_new_entry_dialog.dart';
 import 'package:house_app/dependancy_injection.dart';
 import 'package:house_app/features/home_screen/data/repository/home_repository.dart';
 // import 'package:intl/intl.dart';
@@ -42,6 +44,10 @@ class _HomeScreen extends StatelessWidget {
           style: context.textTheme.titleLarge?.copyWith(color: Colors.black),
         ),
         actions: [
+          IconButton(
+            onPressed: () => _dialogBuilder(context),
+            icon: const FaIcon(FontAwesomeIcons.moneyBill1Wave),
+          ),
           IconButton(
             onPressed: () => context.navigator.pushNamed(AppScreens.settings),
             icon: const Icon(Icons.settings),
@@ -83,7 +89,8 @@ class _HomeScreen extends StatelessWidget {
     );
   }
 
-  Column _content(BuildContext context, List<ExpenseCategory> expenses) {
+  Column _content(
+      BuildContext context, List<ExpenseCategoryWithPercent> expenses) {
     var size = context.mediaQuery.size;
 
     /*24 is for notification bar on Android*/
@@ -105,16 +112,8 @@ class _HomeScreen extends StatelessWidget {
               crossAxisSpacing: 0,
               childAspectRatio: (gridWidth * ratio) / (gridWidth / 2),
             ),
-            itemCount: expenses.length + 1,
+            itemCount: expenses.length,
             itemBuilder: (BuildContext context, int index) {
-              if (index == expenses.length) {
-                return MainButton(
-                  expense: null,
-                  isHistory: true,
-                  onTap: () =>
-                      context.navigator.pushNamed(AppScreens.allEntries),
-                );
-              }
               final category = expenses[index];
               return MainButton(
                 expense: category,
@@ -143,6 +142,19 @@ class _HomeScreen extends StatelessWidget {
       ],
     );
   }
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    // final date = context.read<HomeBloc>().date;
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AddNewEntryProvider(
+          initialDate: DateTime.now(),
+          isIncome: true,
+        );
+      },
+    );
+  }
 }
 
 class MainButton extends StatelessWidget {
@@ -153,7 +165,7 @@ class MainButton extends StatelessWidget {
     required this.onTap,
   });
   final Function() onTap;
-  final ExpenseCategory? expense;
+  final ExpenseCategoryWithPercent? expense;
   final bool isHistory;
   @override
   Widget build(BuildContext context) {
@@ -173,47 +185,85 @@ class MainButton extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               alignment: Alignment.center,
-              child: Row(
+              child: Stack(
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        isHistory
-                            ? Text(
-                                'History'.toUpperCase(),
-                                style: context.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          isHistory
+                              ? Text(
+                                  'History'.toUpperCase(),
+                                  style:
+                                      context.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              : Text(
+                                  _label(context, expense!.category),
+                                  style:
+                                      context.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              )
-                            : Text(
-                                _label(context, expense!.category),
-                                style: context.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                          expense?.category == ButtonCategory.inCome
+                              ? const SizedBox.shrink()
+                              : Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    color: expense?.percent.percentColor,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                    '${expense!.percent}%',
+                                    style: context.textTheme.bodySmall
+                                        ?.copyWith(
+                                            color: Colors.white, fontSize: 10),
+                                  )),
+                                )
+                        ],
+                      ),
+                      // Row(
+                      //   children: [
+                      //     Text('Status: '),
+                      //     SizedBox(width: 8),
+                      //     Flexible(
+                      //       child: Text(
+                      //         'Excced',
+                      //         style: context.textTheme.bodyMedium?.copyWith(
+                      //           color: Colors.red,
+                      //           fontWeight: FontWeight.bold,
+                      //         ),
+                      //         maxLines: 1,
+                      //         overflow: TextOverflow.ellipsis,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      isHistory
+                          ? const SizedBox.shrink()
+                          : Text(
+                              '${AppFormatter().currency(expense?.amount ?? 0)} ${context.currency}',
+                              style: context.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
                               ),
-                        isHistory
-                            ? const SizedBox.shrink()
-                            : Text(
-                                '${AppFormatter().currency(expense?.amount ?? 0)} ${context.currency}',
-                                style: context.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                ),
-                              ),
-                      ],
+                            ),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: FaIcon(
+                      FontAwesomeIcons.arrowUpRightDots,
+                      color: expense?.category.accentColor ?? Colors.black,
                     ),
                   ),
-                  Column(
-                    children: [
-                      const Spacer(),
-                      FaIcon(
-                        FontAwesomeIcons.arrowUpRightDots,
-                        color: expense?.category.accentColor ?? Colors.black,
-                      ),
-                    ],
-                  )
                 ],
               ),
             ),
@@ -231,6 +281,8 @@ class MainButton extends StatelessWidget {
         return context.translate.week;
       case ButtonCategory.month:
         return context.translate.month;
+      case ButtonCategory.inCome:
+        return context.translate.income;
     }
   }
 }

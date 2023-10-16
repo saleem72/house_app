@@ -88,7 +88,7 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
       date: Value(model.date),
       amount: Value(model.amount),
       description: Value(model.description),
-      isIncome: const Value(false),
+      isIncome: Value(model.isIncome),
     );
     final id = await into(entries).insert(companion);
     return id;
@@ -116,14 +116,17 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
 
     return customSelect(
       '''SELECT 
-            (SELECT SUM(amount) FROM entries WHERE date = ?1) AS "daily", 
-            (SELECT SUM(amount) FROM entries WHERE date BETWEEN ?2 AND ?3) AS "weekly", 
-            (SELECT SUM(amount) FROM entries WHERE date BETWEEN ?4 AND ?5) AS "monthly"
+            (SELECT SUM(amount) FROM entries WHERE date = ?1 AND is_income = false) AS "daily", 
+            (SELECT SUM(amount) FROM entries WHERE date BETWEEN ?2 AND ?3 AND is_income = false) AS "weekly", 
+            (SELECT SUM(amount) FROM entries WHERE date BETWEEN ?4 AND ?5 AND is_income = false) AS "monthly",
+            (SELECT SUM(amount) FROM entries WHERE date BETWEEN ?6 AND ?7 AND is_income = true) AS "in_come"
           FROM entries;''',
       variables: [
         Variable<DateTime>(date),
         Variable<DateTime>(weekStart),
         Variable<DateTime>(weekEnd),
+        Variable<DateTime>(firstOfMonth),
+        Variable<DateTime>(date),
         Variable<DateTime>(firstOfMonth),
         Variable<DateTime>(date),
       ],
@@ -145,6 +148,10 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
                 category: ButtonCategory.month,
                 amount: 0,
               ),
+              ExpenseCategory(
+                category: ButtonCategory.inCome,
+                amount: 0,
+              ),
             ]
           : <ExpenseCategory>[
               ExpenseCategory(
@@ -158,6 +165,10 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
               ExpenseCategory(
                 category: ButtonCategory.month,
                 amount: event[0].read<int?>('monthly') ?? 0,
+              ),
+              ExpenseCategory(
+                category: ButtonCategory.inCome,
+                amount: event[0].read<int?>('in_come') ?? 0,
               ),
             ];
     });

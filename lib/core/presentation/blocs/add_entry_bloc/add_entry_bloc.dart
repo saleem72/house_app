@@ -1,5 +1,7 @@
 //
 
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_app/core/data/local_db/app_database.dart';
@@ -27,6 +29,7 @@ class AddEntryBloc extends Bloc<AddEntryEvent, AddEntryState> {
     on<AddEntryDescriptionChangedEvent>(_onDescriptionHasChanged);
     on<AddEntryAmountChangedEvent>(_onAmountHasChanged);
     on<AddEntrySubmitEvent>(_onSubmit);
+    on<AddIncomeSubmitEvent>(_onAddIncome);
     on<AddEntryDateChangedEvent>(_onDateChanged);
   }
 
@@ -51,6 +54,18 @@ class AddEntryBloc extends Bloc<AddEntryEvent, AddEntryState> {
     return false;
   }
 
+  FutureOr<void> _onAddIncome(
+      AddIncomeSubmitEvent event, Emitter<AddEntryState> emit) async {
+    final entry = Entry(
+      id: 0,
+      date: state.date.onlyDate(),
+      amount: state.amount,
+      description: state.description,
+      isIncome: true,
+    );
+    await _dao.addEntry(entry);
+  }
+
   _onSubmit(AddEntrySubmitEvent event, Emitter<AddEntryState> emit) async {
     Entry entry;
     if (_entry == null) {
@@ -73,7 +88,7 @@ class AddEntryBloc extends Bloc<AddEntryEvent, AddEntryState> {
       await _dao.updateEntry(entry);
     }
 
-    emit(AddEntryState.initail());
+    emit(AddEntryState.initail().copyWith(date: state.date));
   }
 
   _onDateChanged(AddEntryDateChangedEvent event, Emitter<AddEntryState> emit) {

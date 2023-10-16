@@ -1,6 +1,7 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class SpeechApi {
@@ -9,6 +10,7 @@ class SpeechApi {
   static Future<bool> toggleRecording({
     required Function(String text) onResult,
     required ValueChanged<bool> onListening,
+    required ValueChanged<SpeechRecognitionError> onError,
   }) async {
     if (_speech.isListening) {
       _speech.stop();
@@ -17,7 +19,7 @@ class SpeechApi {
 
     final isAvailable = await _speech.initialize(
       onStatus: (status) => onListening(_speech.isListening),
-      onError: (e) => print('Error: $e'),
+      onError: (e) => onError(e),
     );
 
     if (isAvailable) {

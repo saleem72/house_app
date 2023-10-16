@@ -100,4 +100,10 @@ extension DateSpecific on DateTime {
 
     return result;
   }
+
+  static int dayNumberForMonth({required int year, required int month}) {
+    DateTime x1 = DateTime(year, month, 0).toUtc();
+    final y1 = DateTime(year, month + 1, 0).toUtc().difference(x1).inDays;
+    return y1;
+  }
 }

@@ -2,6 +2,7 @@
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:house_app/core/extensions/build_context_extension.dart';
 
 import 'speech.dart';
 
@@ -15,6 +16,7 @@ class IconListeningButton extends StatefulWidget {
 class _IconListeningButtonState extends State<IconListeningButton> {
   bool isListening = false;
   String text = '';
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,5 +66,50 @@ class _IconListeningButtonState extends State<IconListeningButton> {
             });
           }
         },
+        onError: (error) => _showError(context, error.errorMsg),
       );
+
+  _showError(BuildContext context, String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text(context.translate.speech_error),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.translate.speech_error_message,
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: context.colorScheme.error,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                errorMessage,
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                context.navigator.pop();
+              },
+              child: Text(
+                'Ok',
+                style: context.textTheme.titleMedium?.copyWith(
+                    // color: Colors.grey,
+                    ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

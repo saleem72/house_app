@@ -14,6 +14,8 @@
     "week": "Week",
     "month": "Month",
     "total": "Total",
+    "income": "Income",
+    "income_title": "Add new inocme",
     "new_entry_title": "Add new Entry",
     "update_entry_title": "Update Entry",
     "cancel": "Cancel",
@@ -21,5 +23,7 @@
     "ok": "Ok",
     "week_no": "Week No",
     "warning": "Warning",
-    "deletion_confim_message": "Are you sure you want to delete this"
+    "deletion_confim_message": "Are you sure you want to delete this",
+    "speech_error": "Voice regonition",
+    "speech_error_message": "Voice regonition can not initialize for now\ntry again later"
 }

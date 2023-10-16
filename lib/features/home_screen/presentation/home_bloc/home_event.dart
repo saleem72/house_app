@@ -12,7 +12,7 @@ final class HomeFetchDataEvent extends HomeEvent {}
 final class HomeSubscribeEvent extends HomeEvent {}
 
 final class _HomeNewListEvent extends HomeEvent {
-  final List<ExpenseCategory> expenses;
+  final List<ExpenseCategoryWithPercent> expenses;
 
   const _HomeNewListEvent({required this.expenses});
 

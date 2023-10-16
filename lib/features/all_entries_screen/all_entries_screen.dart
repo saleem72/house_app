@@ -6,6 +6,7 @@ import 'package:house_app/core/domian/models/entry.dart';
 import 'package:house_app/core/domian/usecases/date_formatter.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:house_app/features/all_entries_screen/presentation/all_entries_bloc/all_entries_bloc.dart';
+import 'package:house_app/features/home_screen/domian/models/button_category.dart';
 
 class AllEntriesScreen extends StatelessWidget {
   const AllEntriesScreen({super.key});
@@ -42,11 +43,13 @@ class _AllEntriesScreen extends StatelessWidget {
                     child: EnhancedEntrisGrid(entries: state.entries),
                   ),
                   Expanded(
-                    child: StreamBuilder(
+                    child: StreamBuilder<List<ExpenseCategory>>(
                       stream: stream,
                       initialData: const [],
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        final data = snapshot.data ?? [];
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<ExpenseCategory>> snapshot) {
+                        // final data = (snapshot.data ?? []);
+                        final data = (snapshot.data ?? []);
                         return ListView.builder(
                           itemCount: data.length,
                           itemBuilder: (BuildContext context, int index) {
@@ -192,7 +195,13 @@ class EnhancedEntrisGrid extends StatelessWidget {
               ),
             ],
           ),
-          Text(entry.date.toString())
+          Row(
+            children: [
+              Text(entry.date.toString()),
+              const SizedBox(width: 16),
+              Text(entry.isIncome.toString()),
+            ],
+          )
         ],
       ),
     );

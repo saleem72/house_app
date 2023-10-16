@@ -13,7 +13,7 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final IHomeRepository _repository;
-  StreamSubscription<List<ExpenseCategory>>? _subscription;
+  StreamSubscription<List<ExpenseCategoryWithPercent>>? _subscription;
   HomeBloc({
     required IHomeRepository repository,
   })  : _repository = repository,
