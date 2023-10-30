@@ -23,16 +23,18 @@ class DatabaseUtils {
 }
 
 class AppRandoms {
-  static DateTime randomDate() {
-    var days = Random().nextInt(100);
+  AppRandoms._internal();
+
+  static DateTime randomDate({int back = 100}) {
+    var days = Random().nextInt(back);
 
     final endDate = DateTime.now();
     final randomDate = endDate.add(Duration(days: -days));
     return randomDate;
   }
 
-  static int randomInt() {
-    var num = Random().nextInt(20000) + 1000;
+  static int randomInt({int from = 2000, int to = 15000}) {
+    var num = Random().nextInt(to - from) + from;
 
     return num;
   }

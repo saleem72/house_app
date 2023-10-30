@@ -1,7 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 //
 
 import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
+import 'package:house_app/core/domian/models/daily_spending.dart';
+
 import 'package:house_app/core/domian/models/entry.dart';
 import 'package:house_app/core/domian/models/week_expnces.dart';
 import 'package:house_app/core/extensions/date_time_extension.dart';
@@ -81,17 +84,6 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
                 (previousValue, element) => previousValue + element.amount)));
 
     return result;
-  }
-
-  Future<int> addEntry(Entry model) async {
-    final companion = EntriesCompanion(
-      date: Value(model.date),
-      amount: Value(model.amount),
-      description: Value(model.description),
-      isIncome: Value(model.isIncome),
-    );
-    final id = await into(entries).insert(companion);
-    return id;
   }
 
   Future<bool> updateEntry(Entry model) async {
@@ -200,5 +192,50 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
           ..where((tbl) => tbl.id.equals(model.id)))
         .getSingle();
     return await delete(entries).delete(entity);
+  }
+
+  Future<int> addEntry(Entry model) async {
+    final companion = EntriesCompanion(
+      date: Value(model.date),
+      amount: Value(model.amount),
+      description: Value(model.description),
+      isIncome: Value(model.isIncome),
+    );
+    final id = await into(entries).insert(companion);
+    return id;
+  }
+
+  Future insertListOfExpenses(List<Entry> list) async {
+    final companions = list
+        .map((e) => EntriesCompanion(
+              date: Value(e.date),
+              amount: Value(e.amount),
+              description: Value(e.description),
+              isIncome: Value(e.isIncome),
+            ))
+        .toList();
+
+    batch((batch) => batch.insertAll(entries, companions));
+  }
+
+  Future<List<DailySpending>> sumDayInEntries() async {
+    final sumOfDay = entries.amount.sum();
+
+    // final query =( select(entries)
+    //   ..addColumns([sumOfDay]))
+    //   ..groupBy([entries.date.day]);
+
+    final query = select(entries).join([]);
+    query
+      ..addColumns([sumOfDay])
+      ..groupBy([entries.date.day]);
+
+    final result = await query.get();
+
+    final data = result
+        .map((e) => DailySpending(
+            date: e.readTable(entries).date, spendings: e.read(sumOfDay) ?? 0))
+        .toList();
+    return data;
   }
 }

@@ -8,3 +8,9 @@ sealed class AllEntriesEvent extends Equatable {
 }
 
 final class AllEntriesFetchDataEvent extends AllEntriesEvent {}
+
+final class AllEntriesIncreaseSpendEvent extends AllEntriesEvent {}
+
+final class AllEntriesInsertListEvent extends AllEntriesEvent {}
+
+final class AllEntriesDailySpendingsEvent extends AllEntriesEvent {}

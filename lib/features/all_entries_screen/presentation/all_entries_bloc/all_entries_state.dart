@@ -19,3 +19,21 @@ final class AllEntriesSuccess extends AllEntriesState {
   @override
   List<Object> get props => [entries];
 }
+
+final class AllEntriesSpending extends AllEntriesState {
+  final double spends;
+
+  const AllEntriesSpending({required this.spends});
+
+  @override
+  List<Object> get props => [spends];
+}
+
+final class AllEntriesDailySpending extends AllEntriesState {
+  final List<DailySpending> spendings;
+
+  const AllEntriesDailySpending({required this.spendings});
+
+  @override
+  List<Object> get props => [spendings];
+}

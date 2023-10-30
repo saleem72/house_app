@@ -15,6 +15,7 @@
     "month": "Month",
     "total": "Total",
     "income": "Income",
+    "left": "Left",
     "income_title": "Add new inocme",
     "new_entry_title": "Add new Entry",
     "update_entry_title": "Update Entry",

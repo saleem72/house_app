@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:house_app/core/data/local_db/app_database.dart';
 import 'package:house_app/core/data/local_db/daos/entry_dao/entry_dao.dart';
+import 'package:house_app/core/domian/models/daily_spending.dart';
 import 'package:house_app/features/home_screen/domian/models/monthly_statistics.dart';
 
 import '../../domian/models/button_category.dart';
@@ -44,5 +45,11 @@ class HomeRepository implements IHomeRepository {
   Future dispose() async {
     await _subscription?.cancel();
     await _controller.close();
+  }
+
+  @override
+  Future<List<DailySpending>> sumDayInEntries() async {
+    final data = await _dao.sumDayInEntries();
+    return data;
   }
 }

@@ -21,6 +21,7 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
     on<HomeFetchDataEvent>(_onFetchData);
     on<HomeSubscribeEvent>(_onSubscribe);
     on<_HomeNewListEvent>(_onNewList);
+    on<_HomeFetchDailySpendingsEvent>(_onFetchDailySpendings);
   }
 
   _onFetchData(HomeFetchDataEvent event, Emitter<StatisticState> emit) async {
@@ -33,6 +34,7 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
       HomeSubscribeEvent event, Emitter<StatisticState> emit) {
     _subscription = _repository.subcribe().listen((event) {
       add(_HomeNewListEvent(expenses: event));
+      add(_HomeFetchDailySpendingsEvent());
     });
   }
 
@@ -46,5 +48,15 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
     _subscription?.cancel();
     _repository.dispose();
     return super.close();
+  }
+
+  FutureOr<void> _onFetchDailySpendings(
+      _HomeFetchDailySpendingsEvent event, Emitter<StatisticState> emit) async {
+    final data = await _repository.sumDayInEntries();
+    if (state is HomeSuccess) {
+      emit(HomeSuccess(
+          expenses:
+              (state as HomeSuccess).expenses.copyWith(dailySpendings: data)));
+    }
   }
 }
