@@ -5,7 +5,6 @@ import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 
-import 'package:house_app/core/domian/models/daily_spending.dart';
 import 'package:house_app/core/extensions/date_time_extension.dart';
 import 'package:house_app/core/extensions/int_extension.dart';
 import 'package:house_app/features/home_screen/domian/models/button_category.dart';
@@ -21,7 +20,7 @@ class MonthlyStatistics extends Equatable {
   final int leftForDay;
   final int leftForWeek;
   final int left;
-  final List<DailySpending> dailySpendings;
+  final int daysLeft;
   const MonthlyStatistics({
     required this.income,
     required this.day,
@@ -33,11 +32,30 @@ class MonthlyStatistics extends Equatable {
     required this.left,
     required this.leftForDay,
     required this.leftForWeek,
-    required this.dailySpendings,
+    required this.daysLeft,
   });
+
+  int get perDay => daysLeft == 0 ? left : left ~/ daysLeft;
+
+  factory MonthlyStatistics.initial() => const MonthlyStatistics(
+        income: 0,
+        day: 0,
+        week: 0,
+        month: 0,
+        dayPercent: 0,
+        weekPercent: 0,
+        monthPercent: 0,
+        left: 0,
+        leftForDay: 0,
+        leftForWeek: 0,
+        daysLeft: 0,
+      );
 
   factory MonthlyStatistics.fromList(List<ExpenseCategory> event) {
     final date = DateTime.now();
+    final dayLeft =
+        DateSpecific.dayNumberForMonth(year: date.year, month: date.month) -
+            date.day;
     final days =
         DateSpecific.dayNumberForMonth(year: date.year, month: date.month);
     final income = event
@@ -64,7 +82,7 @@ class MonthlyStatistics extends Equatable {
       left: income > 0 ? income - month : 0,
       leftForDay: income > 0 ? max(allowedPerDay - day, 0) : 0,
       leftForWeek: income > 0 ? max(allowedPerDay * 7 - week, 0) : 0,
-      dailySpendings: const [],
+      daysLeft: dayLeft,
     );
   }
 
@@ -78,7 +96,7 @@ class MonthlyStatistics extends Equatable {
         weekPercent,
         monthPercent,
         left,
-        dailySpendings,
+        daysLeft
       ];
 
   List<ExpenseCategoryWithPercent> list() => [
@@ -118,20 +136,19 @@ class MonthlyStatistics extends Equatable {
     int? leftForDay,
     int? leftForWeek,
     int? left,
-    List<DailySpending>? dailySpendings,
+    int? daysLeft,
   }) {
     return MonthlyStatistics(
-      income: income ?? this.income,
-      day: day ?? this.day,
-      week: week ?? this.week,
-      month: month ?? this.month,
-      dayPercent: dayPercent ?? this.dayPercent,
-      weekPercent: weekPercent ?? this.weekPercent,
-      monthPercent: monthPercent ?? this.monthPercent,
-      leftForDay: leftForDay ?? this.leftForDay,
-      leftForWeek: leftForWeek ?? this.leftForWeek,
-      left: left ?? this.left,
-      dailySpendings: dailySpendings ?? this.dailySpendings,
-    );
+        income: income ?? this.income,
+        day: day ?? this.day,
+        week: week ?? this.week,
+        month: month ?? this.month,
+        dayPercent: dayPercent ?? this.dayPercent,
+        weekPercent: weekPercent ?? this.weekPercent,
+        monthPercent: monthPercent ?? this.monthPercent,
+        leftForDay: leftForDay ?? this.leftForDay,
+        leftForWeek: leftForWeek ?? this.leftForWeek,
+        left: left ?? this.left,
+        daysLeft: daysLeft ?? this.daysLeft);
   }
 }

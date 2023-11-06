@@ -67,7 +67,7 @@ enum ButtonCategory {
       case ButtonCategory.day:
         return AppScreens.dailyScreen;
       case ButtonCategory.inCome:
-        return AppScreens.allEntries;
+        return AppScreens.income;
     }
   }
 }

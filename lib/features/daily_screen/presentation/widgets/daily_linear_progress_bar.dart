@@ -14,12 +14,10 @@ class DailyLinearProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<StatisticBloc, StatisticState>(
       builder: (context, state) {
-        return state is HomeSuccess
-            ? LinearProgressBar(
-                percent: state.expenses.dayPercent,
-                borderWidth: 10,
-              )
-            : const SizedBox.shrink();
+        return LinearProgressBar(
+          percent: state.expenses.dayPercent,
+          borderWidth: 10,
+        );
       },
     );
   }

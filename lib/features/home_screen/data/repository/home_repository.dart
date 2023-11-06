@@ -3,6 +3,7 @@
 
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:house_app/core/data/local_db/app_database.dart';
 import 'package:house_app/core/data/local_db/daos/entry_dao/entry_dao.dart';
 import 'package:house_app/core/domian/models/daily_spending.dart';
@@ -49,7 +50,28 @@ class HomeRepository implements IHomeRepository {
 
   @override
   Future<List<DailySpending>> sumDayInEntries() async {
+    final date = DateTime.now();
     final data = await _dao.sumDayInEntries();
-    return data;
+    if (data.isNotEmpty) {
+      final lastDay = data
+          .reduce((value, element) => value.day > element.day ? value : element)
+          .day;
+      // final firstDay = data
+      //     .reduce((value, element) => value.day < element.day ? value : element)
+      //     .day;
+      // final firstDay = 1;
+      final days = data.map((e) => e.day).toList();
+      for (var i = 1; i < lastDay + 1; i++) {
+        if (!days.contains(i)) {
+          data.add(DailySpending(
+              date: DateTime(date.year, date.month, i), spendings: 0));
+        }
+      }
+
+      final result = data.sortedBy((element) => element.date);
+      return result;
+    }
+
+    return [];
   }
 }

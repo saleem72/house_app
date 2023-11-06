@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:house_app/core/domian/models/daily_spending.dart';
 import 'package:house_app/features/home_screen/domian/models/monthly_statistics.dart';
 
 import '../../domian/repository/i_home_repository.dart';
@@ -17,17 +18,10 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
   StatisticBloc({
     required IHomeRepository repository,
   })  : _repository = repository,
-        super(HomeInitial()) {
-    on<HomeFetchDataEvent>(_onFetchData);
+        super(StatisticState.initial()) {
     on<HomeSubscribeEvent>(_onSubscribe);
     on<_HomeNewListEvent>(_onNewList);
     on<_HomeFetchDailySpendingsEvent>(_onFetchDailySpendings);
-  }
-
-  _onFetchData(HomeFetchDataEvent event, Emitter<StatisticState> emit) async {
-    emit(HomeLoading());
-    // final data = await _repository.fetchData();
-    // emit(HomeSuccess(expenses: data));
   }
 
   FutureOr<void> _onSubscribe(
@@ -40,7 +34,7 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
 
   FutureOr<void> _onNewList(
       _HomeNewListEvent event, Emitter<StatisticState> emit) {
-    emit(HomeSuccess(expenses: event.expenses));
+    emit(state.copyWith(expenses: event.expenses));
   }
 
   @override
@@ -53,10 +47,6 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
   FutureOr<void> _onFetchDailySpendings(
       _HomeFetchDailySpendingsEvent event, Emitter<StatisticState> emit) async {
     final data = await _repository.sumDayInEntries();
-    if (state is HomeSuccess) {
-      emit(HomeSuccess(
-          expenses:
-              (state as HomeSuccess).expenses.copyWith(dailySpendings: data)));
-    }
+    emit(state.copyWith(dailySpendings: data));
   }
 }

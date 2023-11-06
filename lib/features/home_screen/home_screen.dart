@@ -1,17 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 //
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:house_app/configuration/routing/app_screens.dart';
 
 import 'package:house_app/core/extensions/build_context_extension.dart';
-import 'package:house_app/core/presentation/widgets/add_new_entry_dialog.dart';
-import 'package:house_app/features/home_screen/domian/models/monthly_statistics.dart';
+import 'package:house_app/core/presentation/widgets/app_drawer.dart';
 
 import 'presentation/statistic_bloc/statistic_bloc.dart';
 import 'presentation/widgets/main_button.dart';
+import 'presentation/widgets/month_lefts_view.dart';
 import 'presentation/widgets/monthly_chart.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -42,41 +39,31 @@ class _HomeScreen extends StatelessWidget {
           context.translate.home,
           style: context.textTheme.titleLarge?.copyWith(color: Colors.black),
         ),
-        actions: [
-          IconButton(
-            onPressed: () => _dialogBuilder(context),
-            icon: const FaIcon(FontAwesomeIcons.moneyBill1Wave),
-          ),
-          IconButton(
-            onPressed: () => context.navigator.pushNamed(AppScreens.settings),
-            icon: const Icon(Icons.settings),
-          ),
-        ],
       ),
       body: BlocBuilder<StatisticBloc, StatisticState>(
         builder: (context, state) {
-          return switch (state) {
-            HomeInitial() => _emptyStatistic(),
-            HomeLoading() => const Center(child: CircularProgressIndicator()),
-            HomeSuccess() => _content(context, state.expenses)
-          };
+          return _content(context, state);
         },
       ),
+      drawer: const AppDrawer(),
     );
   }
 
-  Widget _emptyStatistic() {
-    return const SizedBox.shrink();
-  }
-
-  Column _content(BuildContext context, MonthlyStatistics status) {
+  Column _content(BuildContext context, StatisticState status) {
     var size = context.mediaQuery.size;
     final double widgetWidth = size.width;
     final double gridWidth = widgetWidth - 8;
     const double ratio = 0.75;
-    final expenses = status.list();
+    final expenses = status.expenses.list();
     return Column(
       children: [
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          child: MonthLeftsView(
+            statistics: status.expenses,
+          ),
+        ),
         const SizedBox(height: 8),
         AspectRatio(
           aspectRatio: widgetWidth / widgetWidth * ratio * 2,
@@ -102,24 +89,21 @@ class _HomeScreen extends StatelessWidget {
         Expanded(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            // color: Colors.green,
-            child: MonthlyChart(status: status),
+            // padding: const EdgeInsets.only(top: 8),
+            color: Colors.amber.shade200,
+            child: Material(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: Container(
+                padding: const EdgeInsets.only(
+                    top: 32, left: 8, right: 8, bottom: 48),
+                child: MonthlyChart(status: status.dailySpendings),
+              ),
+            ),
           ),
         ),
       ],
-    );
-  }
-
-  Future<void> _dialogBuilder(BuildContext context) {
-    // final date = context.read<HomeBloc>().date;
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AddNewEntryProvider(
-          initialDate: DateTime.now(),
-          isIncome: true,
-        );
-      },
     );
   }
 }

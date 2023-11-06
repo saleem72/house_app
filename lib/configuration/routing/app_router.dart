@@ -34,10 +34,14 @@ class AppRouter {
         }
         return MaterialPageRoute(
             builder: (_) => DailySummaryScreen(date: date));
+      case AppScreens.income:
+        return MaterialPageRoute(builder: (_) => const IncomeScreen());
       case AppScreens.allEntries:
         return MaterialPageRoute(builder: (_) => const AllEntriesScreen());
       case AppScreens.settings:
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
+      case AppScreens.history:
+        return MaterialPageRoute(builder: (_) => const HistoryScreen());
       default:
         final String errorMessage = '${settings.name} is not valid route';
         return MaterialPageRoute(

@@ -83,7 +83,7 @@ class AddEntryBloc extends Bloc<AddEntryEvent, AddEntryState> {
         date: state.date.onlyDate(),
         amount: state.amount,
         description: state.description,
-        isIncome: false,
+        isIncome: _entry!.isIncome,
       );
       await _dao.updateEntry(entry);
     }

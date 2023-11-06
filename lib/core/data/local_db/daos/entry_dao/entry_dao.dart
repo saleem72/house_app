@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 //
 
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 import 'package:house_app/core/domian/models/daily_spending.dart';
@@ -92,7 +94,7 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
       date: Value(model.date),
       amount: Value(model.amount),
       description: Value(model.description),
-      isIncome: const Value(false),
+      isIncome: Value(model.isIncome),
     );
     final success = await update(entries).replace(companion);
     return success;
@@ -219,13 +221,17 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
   }
 
   Future<List<DailySpending>> sumDayInEntries() async {
+    final month = DateTime.now().month;
     final sumOfDay = entries.amount.sum();
 
     // final query =( select(entries)
     //   ..addColumns([sumOfDay]))
     //   ..groupBy([entries.date.day]);
 
-    final query = select(entries).join([]);
+    final query = (select(entries)
+          ..where((tbl) =>
+              tbl.isIncome.equals(false) & tbl.date.month.equals(month)))
+        .join([]);
     query
       ..addColumns([sumOfDay])
       ..groupBy([entries.date.day]);
@@ -234,8 +240,19 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
 
     final data = result
         .map((e) => DailySpending(
-            date: e.readTable(entries).date, spendings: e.read(sumOfDay) ?? 0))
+            date: e.readTable(entries).date,
+            spendings: max(e.read(sumOfDay) ?? 0, 0)))
         .toList();
     return data;
+  }
+
+  Stream<List<EntryEntity>> monthlyIncomeStraem() {
+    final date = DateTime.now();
+    return (select(entries)
+          ..where((tbl) {
+            final tblDate = tbl.date;
+            return tblDate.month.equals(date.month) & tbl.isIncome.equals(true);
+          }))
+        .watch();
   }
 }

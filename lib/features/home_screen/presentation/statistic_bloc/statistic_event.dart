@@ -7,8 +7,6 @@ sealed class StatisticEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class HomeFetchDataEvent extends StatisticEvent {}
-
 final class HomeSubscribeEvent extends StatisticEvent {}
 
 final class _HomeNewListEvent extends StatisticEvent {
