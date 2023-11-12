@@ -25,10 +25,10 @@ class DatabaseUtils {
 class AppRandoms {
   AppRandoms._internal();
 
-  static DateTime randomDate({int back = 100}) {
+  static DateTime randomDate({DateTime? end, int back = 100}) {
     var days = Random().nextInt(back);
 
-    final endDate = DateTime.now();
+    final endDate = end ?? DateTime.now();
     final randomDate = endDate.add(Duration(days: -days));
     return randomDate;
   }

@@ -6,6 +6,7 @@ import 'package:house_app/core/domian/helpers/safe/safe.dart';
 import 'package:house_app/core/presentation/blocs/add_entry_bloc/add_entry_bloc.dart';
 import 'package:house_app/core/presentation/blocs/locale_bloc/locale_bloc.dart';
 import 'package:house_app/features/daily_screen/daily_dependancies.dart';
+import 'package:house_app/features/history/history_dependancies.dart';
 import 'package:house_app/features/income/income_dependancies.dart';
 import 'package:house_app/features/monthly_screen/monthly_dependancies.dart';
 import 'package:house_app/features/weekly_screen/weekly_dependancies.dart';
@@ -23,6 +24,8 @@ Future initDependencies() async {
   initMonthlyDependancies();
 
   initIncomeDependancies();
+
+  initHistoryDependancies();
 
   locator
       .registerFactory(() => AddEntryBloc(db: locator(), date: DateTime.now()));

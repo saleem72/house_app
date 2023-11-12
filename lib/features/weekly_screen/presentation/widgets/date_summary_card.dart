@@ -36,7 +36,8 @@ class DateSummaryCard extends StatelessWidget {
                     '${AppFormatter().dayOfDate(entry.date, locale: locale.appLang)} ',
                   ),
                   Text(
-                    AppFormatter().date(entry.date, locale: locale.appLang),
+                    AppFormatter()
+                        .arabicDate(entry.date, locale: locale.appLang),
                   ),
                 ],
               ),

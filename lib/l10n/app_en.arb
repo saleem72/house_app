@@ -28,5 +28,6 @@
     "speech_error": "Voice regonition",
     "speech_error_message": "Voice regonition can not initialize for now\ntry again later",
     "drawer_header": "Your\nBudget",
-    "history": "History"
+    "history": "History",
+    "spending": "Spendings"
 }

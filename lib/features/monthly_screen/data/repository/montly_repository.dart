@@ -12,7 +12,8 @@ class MonthlyRepository extends IMonthlyRepository {
   }) : _dao = db.entryDAO;
   @override
   Future<List<WeekExpnces>> fetchData() async {
-    final data = await _dao.monthWeeksExpenses();
+    final date = DateTime.now();
+    final data = await _dao.monthWeeksExpenses(date.year, date.month);
 
     return data;
   }

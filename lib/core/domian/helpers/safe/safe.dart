@@ -12,7 +12,7 @@ class SafeKeys {
   static const String arabicCurrency = "arabicCurrency";
   static const String englishCurrency = "englishCurrency";
   static const String englishCode = 'en';
-  static const String arabicCode = 'ar';
+  static const String arabicCode = 'ar_SY';
   static const String english = "English";
   static const String arabic = "Arabic";
 

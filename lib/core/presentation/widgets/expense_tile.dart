@@ -9,9 +9,11 @@ class ExpenseTile extends StatelessWidget {
     super.key,
     required this.index,
     required this.entry,
+    required this.showDate,
   });
   final int index;
   final Entry entry;
+  final bool showDate;
   @override
   Widget build(BuildContext context) {
     const rowStyle = TextStyle(fontSize: 16);
@@ -48,6 +50,15 @@ class ExpenseTile extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
+          if (showDate)
+            Expanded(
+              child: Text(
+                AppFormatter().date(entry.date),
+                style: rowStyle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
         ],
       ),
     );

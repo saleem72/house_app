@@ -15,10 +15,11 @@ class EntrisGrid extends StatelessWidget {
     super.key,
     required this.entries,
     required this.onDeletion,
+    this.showDate = false,
   });
   final Function(Entry) onDeletion;
   final List<Entry> entries;
-
+  final bool showDate;
   @override
   Widget build(BuildContext context) {
     final total = entries.fold(
@@ -84,6 +85,13 @@ class EntrisGrid extends StatelessWidget {
               style: headerStyle,
             ),
           ),
+          if (showDate)
+            Expanded(
+              child: Text(
+                context.translate.date,
+                style: headerStyle,
+              ),
+            ),
         ],
       ),
     );
@@ -109,7 +117,11 @@ class EntrisGrid extends StatelessWidget {
           ),
         ],
       ),
-      child: ExpenseTile(entry: entry, index: index + 1),
+      child: ExpenseTile(
+        entry: entry,
+        index: index + 1,
+        showDate: showDate,
+      ),
     );
   }
 

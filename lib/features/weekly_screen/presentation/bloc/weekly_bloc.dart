@@ -24,7 +24,7 @@ class WeeklyBloc extends Bloc<WeeklyEvent, WeeklyState> {
   FutureOr<void> _onFetchData(
       WeekFetchDataEvent event, Emitter<WeeklyState> emit) async {
     emit(WeeklyLoading());
-    final date = week?.days.first ?? DateTime.now();
+    final date = week?.days.first.date ?? DateTime.now();
     final data = await _repository.fetchData(date);
     data.sort((a, b) {
       return a.date.compareTo(b.date);

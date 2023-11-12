@@ -47,6 +47,9 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Color(0xFFFDEBF9),
+            ),
             fontFamily:
                 state.appLang.languageCode == 'en' ? "Poppins" : "Cairo",
           ),

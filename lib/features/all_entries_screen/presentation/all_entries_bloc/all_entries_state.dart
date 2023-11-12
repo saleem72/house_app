@@ -37,3 +37,12 @@ final class AllEntriesDailySpending extends AllEntriesState {
   @override
   List<Object> get props => [spendings];
 }
+
+final class AllEntriesMonthExpenses extends AllEntriesState {
+  final List<WeekExpnces> expenses;
+
+  const AllEntriesMonthExpenses({required this.expenses});
+
+  @override
+  List<Object> get props => [expenses];
+}

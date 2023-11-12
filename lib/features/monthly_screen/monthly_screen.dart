@@ -6,6 +6,7 @@ import 'package:house_app/configuration/routing/app_screens.dart';
 import 'package:house_app/core/domian/models/week_expnces.dart';
 import 'package:house_app/core/domian/usecases/date_formatter.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
+import 'package:house_app/core/presentation/blocs/locale_bloc/locale_bloc.dart';
 import 'package:house_app/dependancy_injection.dart' as di;
 
 import 'presentation/monthly_bloc/monthly_bloc.dart';
@@ -67,6 +68,7 @@ class WeekExpansesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.read<LocaleBloc>().state.appLang;
     return GestureDetector(
       onTap: () =>
           context.navigator.pushNamed(AppScreens.weeklyScreen, arguments: week),
@@ -84,13 +86,7 @@ class WeekExpansesCard extends StatelessWidget {
                     '${context.translate.week_no}: ${week.index.toString()}',
                     style: context.textTheme.titleMedium?.copyWith(),
                   ),
-                  // week.expenses > 0 ?
-                  Column(
-                    children: [
-                      ...week.days.map((e) =>
-                          Text(AppFormatter().dayOfDate(e) + e.day.toString()))
-                    ],
-                  ),
+
                   Text(
                     '${AppFormatter().currency(week.expenses)} ${context.currency}',
                     style: context.textTheme.titleMedium?.copyWith(),
@@ -98,14 +94,35 @@ class WeekExpansesCard extends StatelessWidget {
                   // : const SizedBox.shrink(),
                 ],
               ),
-              Row(
-                children: [
-                  Text(
-                    '',
-                    style: context.textTheme.titleMedium?.copyWith(),
-                  )
-                ],
-              )
+              // Row(
+              //   children: [
+              //     Text(
+              //       '',
+              //       style: context.textTheme.titleMedium?.copyWith(),
+              //     )
+              //   ],
+              // )
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Column(
+                  children: [
+                    ...week.days.map((e) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              AppFormatter().dayOfDate(e.date, locale: locale),
+                              style: context.textTheme.titleSmall?.copyWith(),
+                            ),
+                            Text(
+                              e.amount.toString(),
+                              style: context.textTheme.titleSmall?.copyWith(),
+                            ),
+                          ],
+                        ))
+                  ],
+                ),
+              ),
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:house_app/core/extensions/string_extension.dart';
 import 'package:intl/intl.dart';
 
 class AppFormatter {
@@ -17,6 +18,18 @@ class AppFormatter {
   String date(DateTime value, {Locale? locale}) {
     DateFormat dateFormat = DateFormat('yyyy MMM dd', locale?.languageCode);
     return dateFormat.format(value);
+  }
+
+  String arabicDate(DateTime value, {Locale? locale}) {
+    DateFormat dateFormat = DateFormat('yyyy MMM dd', locale?.languageCode);
+    final result = dateFormat.format(value);
+    return result.arabicMonth();
+  }
+
+  String arabicMonth(DateTime value, {Locale? locale}) {
+    DateFormat dateFormat = DateFormat('yyyy MMM', locale?.languageCode);
+    final result = dateFormat.format(value);
+    return result.arabicMonth();
   }
 
   String fullDate(DateTime value) {

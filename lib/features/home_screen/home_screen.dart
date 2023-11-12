@@ -90,7 +90,6 @@ class _HomeScreen extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             // padding: const EdgeInsets.only(top: 8),
-            color: Colors.amber.shade200,
             child: Material(
               elevation: 4,
               shape: RoundedRectangleBorder(

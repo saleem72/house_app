@@ -2,7 +2,21 @@
 
 extension DateSpecific on DateTime {
   DateTime startOfWeek() => subtract(Duration(days: weekday - 1));
-  DateTime endOfWeek() => add(Duration(days: DateTime.daysPerWeek - weekday));
+  // DateTime endOfWeek() {
+  //   return add(Duration(days: DateTime.daysPerWeek - weekday));
+  // }
+
+  DateTime endOfWeek({int firstDay = DateTime.sunday}) {
+    DateTime start = this;
+    while (true) {
+      final end = start.add(const Duration(days: 1));
+      if (end.weekday == firstDay) {
+        return start;
+      }
+      start = end;
+    }
+    // return add(Duration(days: DateTime.daysPerWeek - weekday));
+  }
 
   bool isSameDate(DateTime other) {
     return year == other.year && month == other.month && day == other.day;
@@ -28,82 +42,57 @@ extension DateSpecific on DateTime {
     return temp;
   }
 
-  List<DateTime> _firstWeek() {
-    final List<DateTime> result = [];
-    final first = DateTime(year, month, 1);
-    result.add(first);
-    final firstDay = first.weekday;
-    for (var i = 1; i < (7 - firstDay + 1); i++) {
-      final temp = first.add(Duration(days: i));
-      result.add(temp);
-    }
-    return result;
-  }
-
   DateTime get lastDayOfMonth =>
       month < 12 ? DateTime(year, month + 1, 0) : DateTime(year + 1, 1, 0);
 
-  List<DateTime> _lastWeek() {
-    final List<DateTime> result = [];
-    final end = lastDayOfMonth;
-    final first = end.startOfWeek();
-    result.add(first);
-    final firstDay = first.weekday;
-    for (var i = 1; i < (7 - firstDay); i++) {
-      final temp = first.add(Duration(days: i));
-      if (temp.compareTo(end) <= 0) {
-        result.add(temp);
+  List<List<DateTime>> monthWeaks({int firstDay = DateTime.sunday}) {
+    List<List<DateTime>> weeks = [];
+    List<DateTime> group = [];
+    final daysNum = dayNumberForMonth(year: year, month: month);
+    for (var i = 1; i < daysNum + 1; i++) {
+      final date = DateTime(year, month, i);
+      final flag = date.weekday == firstDay;
+      if (flag && group.isNotEmpty) {
+        weeks.add(group.map((e) => e).toList());
+        group.clear();
+        group.add(date);
+      } else {
+        group.add(date);
       }
     }
-    return result;
-  }
-
-  List<DateTime> _midWeek(DateTime start, DateTime maxDate) {
-    if (maxDate.compareTo(start) <= 0) {
-      return [];
+    if (group.isNotEmpty) {
+      weeks.add(group);
     }
-    final List<DateTime> result = [];
-    final end = maxDate;
-    final first = start;
-    result.add(first);
-    final firstDay = first.weekday;
-    for (var i = 1; i < (7 - firstDay + 1); i++) {
-      final temp = first.add(Duration(days: i));
-      if (temp.compareTo(end) <= 0) {
-        result.add(temp);
-      }
-    }
-    return result;
-  }
-
-  List<List<DateTime>> monthWeaks() {
-    final firstWeek = _firstWeek();
-    // print(firstWeek);
-    final lastWeek = _lastWeek();
-    // print(lastWeek);
-    DateTime start = firstWeek.last.add(const Duration(days: 1));
-    final end = lastWeek.first;
-    final List<List<DateTime>> mids = [];
-    while (true) {
-      final mid = _midWeek(start, end);
-      if (mid.isEmpty) {
-        break;
-      }
-      mids.add(mid);
-      start = mid.last.add(const Duration(days: 1));
-    }
-
-    final List<List<DateTime>> result = [];
-    result.add(firstWeek);
-    result.addAll(mids);
-    result.add(lastWeek);
-
-    return result;
+    return weeks;
   }
 
   static int dayNumberForMonth({required int year, required int month}) {
     DateTime x1 = DateTime(year, month, 0).toUtc();
-    final y1 = DateTime(year, month + 1, 0).toUtc().difference(x1).inDays;
+    int y1;
+    if (month == 12) {
+      y1 = DateTime(year + 1, 1, 0).toUtc().difference(x1).inDays;
+    } else {
+      y1 = DateTime(year, month + 1, 0).toUtc().difference(x1).inDays;
+    }
     return y1;
+  }
+
+  DateTime toDrift() {
+    return add(_utcDifference());
+  }
+
+  DateTime fromDrift() {
+    return add(-_utcDifference());
+  }
+
+  Duration _utcDifference() {
+    final date = DateTime.now();
+    final local = DateTime(date.year, date.month, date.day);
+    final utc = DateTime.utc(date.year, date.month, date.day);
+    final dateDifference = utc.difference(local);
+    final sign = dateDifference.inMinutes ~/ dateDifference.inMinutes.abs();
+    final safty = dateDifference.inHours.abs() + 2;
+    final result = Duration(hours: safty * sign);
+    return result;
   }
 }

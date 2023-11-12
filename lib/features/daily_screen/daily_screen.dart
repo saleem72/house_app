@@ -88,12 +88,13 @@ class _DailyScreen extends StatelessWidget {
           if (date.isSameDate(DateTime.now())) const DailyLinearProgressBar(),
           const SizedBox(height: 8),
           Expanded(
-              child: EntrisGrid(
-            entries: entries,
-            onDeletion: (entry) => context
-                .read<DailyBloc>()
-                .add(DailyDeleteEntryEvent(entry: entry)),
-          )),
+            child: EntrisGrid(
+              entries: entries,
+              onDeletion: (entry) => context
+                  .read<DailyBloc>()
+                  .add(DailyDeleteEntryEvent(entry: entry)),
+            ),
+          ),
         ],
       ),
     );

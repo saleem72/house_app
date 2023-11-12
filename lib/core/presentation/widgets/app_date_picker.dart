@@ -1,7 +1,9 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/presentation/blocs/locale_bloc/locale_bloc.dart';
 
 class AppDatePicker extends StatefulWidget {
   const AppDatePicker({
@@ -22,6 +24,7 @@ class AppDatePicker extends StatefulWidget {
 class _AppDatePickerState extends State<AppDatePicker> with RestorationMixin {
   @override
   Widget build(BuildContext context) {
+    final locale = context.read<LocaleBloc>().state;
     return TextButton(
       onPressed: () {
         _restorableDatePickerRouteFuture.present();
@@ -33,7 +36,8 @@ class _AppDatePickerState extends State<AppDatePicker> with RestorationMixin {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text(AppFormatter().date(_selectedDate.value)),
+          Text(AppFormatter()
+              .arabicDate(_selectedDate.value, locale: locale.appLang)),
           const SizedBox(width: 4),
           Icon(
             Icons.calendar_month,
