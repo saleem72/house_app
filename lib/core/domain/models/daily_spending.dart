@@ -5,31 +5,31 @@ import 'package:equatable/equatable.dart';
 
 class DailySpending extends Equatable {
   final DateTime date;
-  final int spendings;
+  final int spending;
 
   const DailySpending({
     required this.date,
-    required this.spendings,
+    required this.spending,
   });
 
   int get day => date.day;
 
   @override
-  List<Object?> get props => [date, spendings];
+  List<Object?> get props => [date, spending];
 }
 
 extension DailySpendingList on List<DailySpending> {
   double get minY => isNotEmpty
       ? reduce((value, element) =>
-              value.spendings < element.spendings ? value : element)
-          .spendings
+              value.spending < element.spending ? value : element)
+          .spending
           .toDouble()
       : 1;
 
   double get maxY => isNotEmpty
       ? reduce((value, element) =>
-              value.spendings > element.spendings ? value : element)
-          .spendings
+              value.spending > element.spending ? value : element)
+          .spending
           .toDouble()
       : 4;
 

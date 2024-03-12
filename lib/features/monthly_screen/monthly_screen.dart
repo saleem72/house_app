@@ -3,11 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_app/configuration/routing/app_screens.dart';
-import 'package:house_app/core/domian/models/week_expnces.dart';
-import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/domain/models/week_expenses.dart';
+import 'package:house_app/core/domain/use_cases/date_formatter.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:house_app/core/presentation/blocs/locale_bloc/locale_bloc.dart';
-import 'package:house_app/dependancy_injection.dart' as di;
+import 'package:house_app/dependency_injection.dart' as di;
 
 import 'presentation/monthly_bloc/monthly_bloc.dart';
 
@@ -46,7 +46,7 @@ class _MonthlyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildWeeksList(BuildContext context, List<WeekExpnces> weeks) {
+  Widget _buildWeeksList(BuildContext context, List<WeekExpenses> weeks) {
     return ListView.separated(
       separatorBuilder: (context, index) => const SizedBox(height: 8),
       itemCount: weeks.length,
@@ -64,7 +64,7 @@ class WeekExpansesCard extends StatelessWidget {
     required this.week,
   });
 
-  final WeekExpnces week;
+  final WeekExpenses week;
 
   @override
   Widget build(BuildContext context) {

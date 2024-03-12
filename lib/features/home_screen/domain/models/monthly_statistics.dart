@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:house_app/core/extensions/date_time_extension.dart';
 import 'package:house_app/core/extensions/int_extension.dart';
-import 'package:house_app/features/home_screen/domian/models/button_category.dart';
+import 'package:house_app/features/home_screen/domain/models/button_category.dart';
 
 class MonthlyStatistics extends Equatable {
   final int income;

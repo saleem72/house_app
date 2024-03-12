@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/domain/use_cases/date_formatter.dart';
 import 'package:house_app/core/presentation/blocs/locale_bloc/locale_bloc.dart';
 
 class AppDatePicker extends StatefulWidget {

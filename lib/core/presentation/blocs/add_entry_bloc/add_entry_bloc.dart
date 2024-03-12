@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_app/core/data/local_db/app_database.dart';
 import 'package:house_app/core/data/local_db/daos/entry_dao/entry_dao.dart';
-import 'package:house_app/core/domian/models/entry.dart';
+import 'package:house_app/core/domain/models/entry.dart';
 import 'package:house_app/core/extensions/date_time_extension.dart';
 
 part 'add_entry_event.dart';

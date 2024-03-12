@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/domain/use_cases/date_formatter.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:house_app/core/extensions/int_extension.dart';
-import 'package:house_app/features/home_screen/domian/models/button_category.dart';
+import 'package:house_app/features/home_screen/domain/models/button_category.dart';
 
 class MainButton extends StatelessWidget {
   const MainButton({

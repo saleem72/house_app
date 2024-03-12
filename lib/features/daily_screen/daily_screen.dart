@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/models/entry.dart';
+import 'package:house_app/core/domain/models/entry.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:house_app/core/extensions/date_time_extension.dart';
 import 'package:house_app/core/presentation/widgets/core_widgets.dart';
-import 'package:house_app/dependancy_injection.dart' as di;
+import 'package:house_app/dependency_injection.dart' as di;
 import 'package:house_app/features/daily_screen/presentation/bloc/daily_bloc.dart';
 
 import 'presentation/widgets/daily_linear_progress_bar.dart';
@@ -88,7 +88,7 @@ class _DailyScreen extends StatelessWidget {
           if (date.isSameDate(DateTime.now())) const DailyLinearProgressBar(),
           const SizedBox(height: 8),
           Expanded(
-            child: EntrisGrid(
+            child: EntriesGrid(
               entries: entries,
               onDeletion: (entry) => context
                   .read<DailyBloc>()

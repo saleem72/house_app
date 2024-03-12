@@ -6,11 +6,13 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:house_app/core/data/local_db/app_database.dart';
 import 'package:house_app/core/data/local_db/daos/entry_dao/entry_dao.dart';
-import 'package:house_app/core/domian/models/daily_spending.dart';
-import 'package:house_app/features/home_screen/domian/models/monthly_statistics.dart';
+import 'package:house_app/core/data/mappers/entry_mapper.dart';
+import 'package:house_app/core/domain/models/daily_spending.dart';
+import 'package:house_app/core/domain/models/entry.dart';
+import 'package:house_app/features/home_screen/domain/models/monthly_statistics.dart';
 
-import '../../domian/models/button_category.dart';
-import '../../domian/repository/i_home_repository.dart';
+import '../../domain/models/button_category.dart';
+import '../../domain/repository/i_home_repository.dart';
 
 class HomeRepository implements IHomeRepository {
   final EntryDAO _dao;
@@ -30,7 +32,7 @@ class HomeRepository implements IHomeRepository {
   }
 
   @override
-  Stream<MonthlyStatistics> subcribe() {
+  Stream<MonthlyStatistics> subscribe() {
     _subscription = _dao.watchStatistics().listen((event) {
       // final data = ExpenseCategoryWithPercent.fromList(event);
       final data = MonthlyStatistics.fromList(event);
@@ -64,7 +66,7 @@ class HomeRepository implements IHomeRepository {
       for (var i = 1; i < lastDay + 1; i++) {
         if (!days.contains(i)) {
           data.add(DailySpending(
-              date: DateTime(date.year, date.month, i), spendings: 0));
+              date: DateTime(date.year, date.month, i), spending: 0));
         }
       }
 
@@ -73,5 +75,13 @@ class HomeRepository implements IHomeRepository {
     }
 
     return [];
+  }
+
+  @override
+  Future<List<Entry>> testData() async {
+    final data = await _dao.allEntries();
+    final mapper = EntryMapper();
+    final result = data.map((e) => mapper(e)).toList();
+    return result;
   }
 }

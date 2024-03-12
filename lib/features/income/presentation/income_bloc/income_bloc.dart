@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/models/entry.dart';
+import 'package:house_app/core/domain/models/entry.dart';
 import 'package:house_app/features/income/domain/repository/i_income_repository.dart';
 
 part 'income_event.dart';

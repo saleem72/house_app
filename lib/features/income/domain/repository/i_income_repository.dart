@@ -1,6 +1,6 @@
 //
 
-import 'package:house_app/core/domian/models/entry.dart';
+import 'package:house_app/core/domain/models/entry.dart';
 
 abstract class IIncomeRepository {
   Stream<List<Entry>> subscribe();

@@ -2,14 +2,14 @@
 
 import 'package:get_it/get_it.dart';
 import 'package:house_app/core/data/local_db/app_database.dart';
-import 'package:house_app/core/domian/helpers/safe/safe.dart';
+import 'package:house_app/core/domain/helpers/safe/safe.dart';
 import 'package:house_app/core/presentation/blocs/add_entry_bloc/add_entry_bloc.dart';
 import 'package:house_app/core/presentation/blocs/locale_bloc/locale_bloc.dart';
-import 'package:house_app/features/daily_screen/daily_dependancies.dart';
-import 'package:house_app/features/history/history_dependancies.dart';
-import 'package:house_app/features/income/income_dependancies.dart';
-import 'package:house_app/features/monthly_screen/monthly_dependancies.dart';
-import 'package:house_app/features/weekly_screen/weekly_dependancies.dart';
+import 'package:house_app/features/daily_screen/daily_dependencies.dart';
+import 'package:house_app/features/history/history_dependencies.dart';
+import 'package:house_app/features/income/income_dependencies.dart';
+import 'package:house_app/features/monthly_screen/monthly_dependencies.dart';
+import 'package:house_app/features/weekly_screen/weekly_dependencies.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final locator = GetIt.instance;
@@ -17,15 +17,15 @@ final locator = GetIt.instance;
 Future initDependencies() async {
   locator.registerLazySingleton(() => AppDatabase());
 
-  initDailyDependancies();
+  initDailyDependencies();
 
-  initWeeklyDependancies();
+  initWeeklyDependencies();
 
-  initMonthlyDependancies();
+  initMonthlyDependencies();
 
-  initIncomeDependancies();
+  initIncomeDependencies();
 
-  initHistoryDependancies();
+  initHistoryDependencies();
 
   locator
       .registerFactory(() => AddEntryBloc(db: locator(), date: DateTime.now()));

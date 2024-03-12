@@ -8,7 +8,7 @@ import 'package:house_app/features/daily_screen/presentation/bloc/daily_bloc.dar
 import 'package:house_app/features/daily_summary_screen/data/repository/daily_summary_repository.dart';
 import 'package:house_app/features/daily_summary_screen/domain/repository/i_daily_summary_repository.dart';
 
-initDailyDependancies() {
+initDailyDependencies() {
   final locator = GetIt.instance;
   locator.registerLazySingleton(() => EntryMapper());
   locator.registerFactory<IDailyRepository>(

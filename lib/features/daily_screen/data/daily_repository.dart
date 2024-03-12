@@ -6,7 +6,7 @@ import 'package:house_app/core/data/local_db/app_database.dart';
 import 'package:house_app/core/data/local_db/daos/entry_dao/entry_dao.dart';
 import 'package:house_app/core/data/mappers/entry_mapper.dart';
 import 'package:house_app/features/daily_screen/domain/repository/i_daily_repository.dart';
-import 'package:house_app/core/domian/models/entry.dart';
+import 'package:house_app/core/domain/models/entry.dart';
 
 class DailyRepository implements IDailyRepository {
   final EntryDAO _dao;
@@ -24,7 +24,7 @@ class DailyRepository implements IDailyRepository {
 
   @override
   Future<List<Entry>> fetchData(DateTime date) async {
-    final entities = await _dao.getDailyExpences(date);
+    final entities = await _dao.getDailyExpenses(date);
     final data = entities.map((e) => _mapper(e)).toList();
     return data;
   }
@@ -32,7 +32,7 @@ class DailyRepository implements IDailyRepository {
   @override
   Stream<List<Entry>> subscribe(DateTime date) {
     _subscription?.cancel();
-    _subscription = _dao.dailyExpencesStraem(date).listen((entities) {
+    _subscription = _dao.dailyExpensesStream(date).listen((entities) {
       final data = entities.map((e) => _mapper(e)).toList();
       _controller.sink.add(data);
     });

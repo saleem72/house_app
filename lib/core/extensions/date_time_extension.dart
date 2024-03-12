@@ -1,21 +1,46 @@
 //
 
 extension DateSpecific on DateTime {
-  DateTime startOfWeek() => subtract(Duration(days: weekday - 1));
+  DateTime startOfWeek() {
+    // return subtract(Duration(days: weekday - 1));
+
+    if (weekday == DateTime.sunday) {
+      return this;
+    }
+    var date = subtract(const Duration(days: 1));
+    while (true) {
+      if (date.weekday == DateTime.sunday) {
+        return date;
+      } else {
+        date = date.subtract(const Duration(days: 1));
+      }
+    }
+  }
   // DateTime endOfWeek() {
   //   return add(Duration(days: DateTime.daysPerWeek - weekday));
   // }
 
   DateTime endOfWeek({int firstDay = DateTime.sunday}) {
-    DateTime start = this;
-    while (true) {
-      final end = start.add(const Duration(days: 1));
-      if (end.weekday == firstDay) {
-        return start;
-      }
-      start = end;
+    // DateTime start = this;
+    // while (true) {
+    //   final end = start.add(const Duration(days: 1));
+    //   if (end.weekday == firstDay) {
+    //     return start;
+    //   }
+    //   start = end;
+    // }
+
+    if (weekday == DateTime.saturday) {
+      return this;
     }
-    // return add(Duration(days: DateTime.daysPerWeek - weekday));
+    var date = add(const Duration(days: 1));
+    while (true) {
+      if (date.weekday == DateTime.saturday) {
+        return date;
+      } else {
+        date = date.add(const Duration(days: 1));
+      }
+    }
   }
 
   bool isSameDate(DateTime other) {
@@ -45,7 +70,7 @@ extension DateSpecific on DateTime {
   DateTime get lastDayOfMonth =>
       month < 12 ? DateTime(year, month + 1, 0) : DateTime(year + 1, 1, 0);
 
-  List<List<DateTime>> monthWeaks({int firstDay = DateTime.sunday}) {
+  List<List<DateTime>> monthWeeks({int firstDay = DateTime.sunday}) {
     List<List<DateTime>> weeks = [];
     List<DateTime> group = [];
     final daysNum = dayNumberForMonth(year: year, month: month);

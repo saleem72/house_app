@@ -1,8 +1,8 @@
 //
 
 import 'package:flutter/material.dart';
-import 'package:house_app/core/domian/models/entry.dart';
-import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/domain/models/entry.dart';
+import 'package:house_app/core/domain/use_cases/date_formatter.dart';
 
 class ExpenseTile extends StatelessWidget {
   const ExpenseTile({
@@ -18,7 +18,8 @@ class ExpenseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     const rowStyle = TextStyle(fontSize: 16);
     return Container(
-      height: 32,
+      height: 40,
+      // padding: const EdgeInsets.symmetric(vertical: 8),
       decoration: const BoxDecoration(
         border: Border(
             bottom: BorderSide(

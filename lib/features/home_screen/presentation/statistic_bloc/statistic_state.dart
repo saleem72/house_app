@@ -3,28 +3,28 @@ part of 'statistic_bloc.dart';
 
 class StatisticState extends Equatable {
   final MonthlyStatistics expenses;
-  final List<DailySpending> dailySpendings;
+  final List<DailySpending> dailySpending;
 
   const StatisticState({
     required this.expenses,
-    required this.dailySpendings,
+    required this.dailySpending,
   });
 
   @override
-  List<Object> get props => [expenses, dailySpendings];
+  List<Object> get props => [expenses, dailySpending];
 
   factory StatisticState.initial() => StatisticState(
         expenses: MonthlyStatistics.initial(),
-        dailySpendings: const [],
+        dailySpending: const [],
       );
 
   StatisticState copyWith({
     MonthlyStatistics? expenses,
-    List<DailySpending>? dailySpendings,
+    List<DailySpending>? dailySpending,
   }) {
     return StatisticState(
       expenses: expenses ?? this.expenses,
-      dailySpendings: dailySpendings ?? this.dailySpendings,
+      dailySpending: dailySpending ?? this.dailySpending,
     );
   }
 }

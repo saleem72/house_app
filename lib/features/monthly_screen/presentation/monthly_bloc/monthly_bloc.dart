@@ -2,8 +2,8 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/models/week_expnces.dart';
-import 'package:house_app/features/monthly_screen/domain/repository/i_montly_repository.dart';
+import 'package:house_app/core/domain/models/week_expenses.dart';
+import 'package:house_app/features/monthly_screen/domain/repository/i_monthly_repository.dart';
 
 part 'monthly_event.dart';
 part 'monthly_state.dart';

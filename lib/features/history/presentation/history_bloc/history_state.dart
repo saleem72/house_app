@@ -3,7 +3,7 @@ part of 'history_bloc.dart';
 
 class HistoryState extends Equatable {
   final DateTime date;
-  final List<WeekExpnces> expenses;
+  final List<WeekExpenses> expenses;
   final MonthTotal statistics;
   final List<DailySpending> dailySpendings;
   const HistoryState({
@@ -19,13 +19,13 @@ class HistoryState extends Equatable {
   factory HistoryState.initial() => HistoryState(
         date: DateTime.now(),
         expenses: const [],
-        statistics: MonthTotal(date: DateTime.now(), income: 0, spendings: 0),
+        statistics: MonthTotal(date: DateTime.now(), income: 0, spending: 0),
         dailySpendings: const [],
       );
 
   HistoryState copyWith({
     DateTime? date,
-    List<WeekExpnces>? expenses,
+    List<WeekExpenses>? expenses,
     MonthTotal? statistics,
     List<DailySpending>? dailySpendings,
   }) {

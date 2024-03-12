@@ -7,11 +7,11 @@ import 'dart:developer' as developer;
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_app/core/data/local_db/database_utils.dart';
-import 'package:house_app/core/domian/models/daily_spending.dart';
-import 'package:house_app/core/domian/models/entry.dart';
-import 'package:house_app/core/domian/models/week_expnces.dart';
+import 'package:house_app/core/domain/models/daily_spending.dart';
+import 'package:house_app/core/domain/models/entry.dart';
+import 'package:house_app/core/domain/models/week_expenses.dart';
 import 'package:house_app/core/extensions/date_time_extension.dart';
-import 'package:house_app/dependancy_injection.dart' as di;
+import 'package:house_app/dependency_injection.dart' as di;
 
 import '../../data/repository/all_entries_repository.dart';
 
@@ -27,16 +27,19 @@ class AllEntriesBloc extends Bloc<AllEntriesEvent, AllEntriesState> {
     on<AllEntriesFetchDataEvent>(_onFetchData);
     on<AllEntriesIncreaseSpendEvent>(_onIncreaseSpends);
     on<AllEntriesInsertListEvent>(_onInsertList);
-    on<AllEntriesDailySpendingsEvent>(_onDailySpendings);
-    on<AllEntriesCompareFuncsEvent>(_onCompareFuncs);
+    on<AllEntriesDailySpendingEvent>(_onDailySpending);
+    on<AllEntriesCompareFuncEvent>(_onCompareFunc);
     on<AllEntriesInsertListForMonthEvent>(_onInsertListForMonth);
     on<AllEntriesDeleteEntryEvent>(_onDeleteEntry);
+    on<AllEntriesFixDatesEvent>(_onFixDates);
   }
 
   FutureOr<void> _onFetchData(
       AllEntriesFetchDataEvent event, Emitter<AllEntriesState> emit) async {
-    final data = await repository.fetchData();
-    emit(AllEntriesSuccess(entries: data));
+    // final data = await repository.fetchData();
+    // emit(AllEntriesSuccess(entries: data));
+
+    emit(AllEntriesInitial());
   }
 
   FutureOr<void> _onIncreaseSpends(
@@ -44,8 +47,8 @@ class AllEntriesBloc extends Bloc<AllEntriesEvent, AllEntriesState> {
     double spends =
         state is AllEntriesSpending ? (state as AllEntriesSpending).spends : 0;
     spends += 25;
-    final tagget = math.min(spends, 100.0);
-    emit(AllEntriesSpending(spends: tagget));
+    final target = math.min(spends, 100.0);
+    emit(AllEntriesSpending(spends: target));
   }
 
   FutureOr<void> _onInsertList(
@@ -67,14 +70,14 @@ class AllEntriesBloc extends Bloc<AllEntriesEvent, AllEntriesState> {
     await repository.insertListOfEntries(data);
   }
 
-  FutureOr<void> _onDailySpendings(AllEntriesDailySpendingsEvent event,
-      Emitter<AllEntriesState> emit) async {
+  FutureOr<void> _onDailySpending(
+      AllEntriesDailySpendingEvent event, Emitter<AllEntriesState> emit) async {
     final data = await repository.sumDayInEntries();
-    emit(AllEntriesDailySpending(spendings: data));
+    emit(AllEntriesDailySpending(spending: data));
   }
 
-  FutureOr<void> _onCompareFuncs(
-      AllEntriesCompareFuncsEvent event, Emitter<AllEntriesState> emit) async {
+  FutureOr<void> _onCompareFunc(
+      AllEntriesCompareFuncEvent event, Emitter<AllEntriesState> emit) async {
     final data = await repository.getMonth(2023, 11);
     emit(AllEntriesMonthExpenses(expenses: data));
   }
@@ -126,7 +129,13 @@ class AllEntriesBloc extends Bloc<AllEntriesEvent, AllEntriesState> {
 
   FutureOr<void> _onDeleteEntry(
       AllEntriesDeleteEntryEvent event, Emitter<AllEntriesState> emit) async {
-    await repository.deleleEntry(event.entry);
+    await repository.deleteEntry(event.entry);
     add(AllEntriesFetchDataEvent());
+  }
+
+  FutureOr<void> _onFixDates(
+      AllEntriesFixDatesEvent event, Emitter<AllEntriesState> emit) async {
+    await repository.fixDates();
+    // print('I fixed it');
   }
 }

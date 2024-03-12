@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:house_app/configuration/routing/app_screens.dart';
-import 'package:house_app/core/domian/models/week_expnces.dart';
+import 'package:house_app/core/domain/models/week_expenses.dart';
 import 'package:house_app/features/screens.dart';
 
 import 'routing_error_screen.dart';
@@ -17,7 +17,7 @@ class AppRouter {
       case AppScreens.monthlyScreen:
         return MaterialPageRoute(builder: (_) => const MonthlyScreen());
       case AppScreens.weeklyScreen:
-        final week = settings.arguments as WeekExpnces?;
+        final week = settings.arguments as WeekExpenses?;
         return MaterialPageRoute(
             builder: (_) => WeeklyScreen(
                   week: week,

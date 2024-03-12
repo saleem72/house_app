@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:house_app/configuration/routing/app_screens.dart';
 import 'package:house_app/core/extensions/date_time_extension.dart';
 import 'package:house_app/core/extensions/int_extension.dart';
-import 'package:house_app/features/home_screen/domian/models/monthly_statistics.dart';
+import 'package:house_app/features/home_screen/domain/models/monthly_statistics.dart';
 
 enum ButtonCategory {
   month,

@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/models/daily_spending.dart';
-import 'package:house_app/core/domian/models/entry.dart';
-import 'package:house_app/core/domian/models/week_expnces.dart';
-import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/domain/models/daily_spending.dart';
+import 'package:house_app/core/domain/models/entry.dart';
+import 'package:house_app/core/domain/models/week_expenses.dart';
+import 'package:house_app/core/domain/use_cases/date_formatter.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
-import 'package:house_app/core/presentation/widgets/entris_grid.dart';
+import 'package:house_app/core/presentation/widgets/entries_grid.dart';
 import 'package:house_app/core/presentation/widgets/linear_progress.dart';
 import 'package:house_app/features/all_entries_screen/presentation/all_entries_bloc/all_entries_bloc.dart';
 
@@ -32,6 +32,13 @@ class _AllEntriesScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Entries'),
+        actions: [
+          IconButton(
+            onPressed: () =>
+                context.read<AllEntriesBloc>().add(AllEntriesFixDatesEvent()),
+            icon: const Icon(Icons.update),
+          ),
+        ],
       ),
       body: BlocBuilder<AllEntriesBloc, AllEntriesState>(
         builder: (context, state) {
@@ -49,7 +56,7 @@ class _AllEntriesScreen extends StatelessWidget {
                 ),
               ),
             AllEntriesDailySpending() =>
-              _buildDialySpendings(context, state.spendings),
+              _buildDailySpending(context, state.spending),
             AllEntriesMonthExpenses() =>
               _buildMonthExpenses(context, state.expenses),
           };
@@ -62,7 +69,7 @@ class _AllEntriesScreen extends StatelessWidget {
     // final formatter = AppFormatter();
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: EntrisGrid(
+      child: EntriesGrid(
         entries: entries,
         showDate: true,
         onDeletion: (entry) {
@@ -132,12 +139,12 @@ class _AllEntriesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDialySpendings(
-      BuildContext context, List<DailySpending> spendings) {
+  Widget _buildDailySpending(
+      BuildContext context, List<DailySpending> spending) {
     return ListView.builder(
-      itemCount: spendings.length,
+      itemCount: spending.length,
       itemBuilder: (BuildContext context, int index) {
-        final day = spendings[index];
+        final day = spending[index];
         return Row(
           children: [
             Expanded(
@@ -149,7 +156,7 @@ class _AllEntriesScreen extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Text(
-                day.spendings.toString(),
+                day.spending.toString(),
               ),
             ),
           ],
@@ -158,7 +165,8 @@ class _AllEntriesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMonthExpenses(BuildContext context, List<WeekExpnces> expenses) {
+  Widget _buildMonthExpenses(
+      BuildContext context, List<WeekExpenses> expenses) {
     return SingleChildScrollView(
       child: Column(
         children: [...expenses.map((e) => _buildWeek(context, e))],
@@ -166,7 +174,7 @@ class _AllEntriesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildWeek(BuildContext context, WeekExpnces week) {
+  Widget _buildWeek(BuildContext context, WeekExpenses week) {
     return Container(
       margin: const EdgeInsets.all(8),
       padding: const EdgeInsets.all(8),

@@ -5,7 +5,7 @@ import 'package:house_app/features/history/data/repository/history_repository.da
 import 'package:house_app/features/history/domain/repository/i_history_repository.dart';
 import 'package:house_app/features/history/presentation/history_bloc/history_bloc.dart';
 
-initHistoryDependancies() {
+initHistoryDependencies() {
   final locator = GetIt.instance;
 
   locator.registerLazySingleton<IHistoryRepository>(

@@ -3,7 +3,7 @@
 import 'package:house_app/core/data/local_db/app_database.dart';
 import 'package:house_app/core/data/local_db/daos/entry_dao/entry_dao.dart';
 import 'package:house_app/core/data/mappers/entry_mapper.dart';
-import 'package:house_app/core/domian/models/entry.dart';
+import 'package:house_app/core/domain/models/entry.dart';
 
 import '../../domain/repository/i_daily_summary_repository.dart';
 
@@ -16,7 +16,7 @@ class DialySummaryRepository implements IDailySummaryRepository {
         _mapper = mapper;
   @override
   Future<List<Entry>> fetchData(DateTime date) async {
-    final entities = await _dao.getDailyExpences(date);
+    final entities = await _dao.getDailyExpenses(date);
     final data = entities.map((e) => _mapper(e)).toList();
     return data;
   }

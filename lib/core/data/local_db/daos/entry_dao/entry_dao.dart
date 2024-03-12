@@ -4,14 +4,14 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
-import 'package:house_app/core/domian/models/daily_spending.dart';
-import 'package:house_app/core/domian/models/date_summary.dart';
+import 'package:house_app/core/domain/models/daily_spending.dart';
+import 'package:house_app/core/domain/models/date_summary.dart';
 
-import 'package:house_app/core/domian/models/entry.dart';
-import 'package:house_app/core/domian/models/month_total.dart';
-import 'package:house_app/core/domian/models/week_expnces.dart';
+import 'package:house_app/core/domain/models/entry.dart';
+import 'package:house_app/core/domain/models/month_total.dart';
+import 'package:house_app/core/domain/models/week_expenses.dart';
 import 'package:house_app/core/extensions/date_time_extension.dart';
-import 'package:house_app/features/home_screen/domian/models/button_category.dart';
+import 'package:house_app/features/home_screen/domain/models/button_category.dart';
 
 import '../../app_database.dart';
 import '../../entities/entry_entity.dart';
@@ -66,6 +66,15 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
     return success;
   }
 
+  Future fixDates() async {
+    List<EntryEntity> records = await select(entries).get();
+    for (var record in records) {
+      record = record.copyWith(date: record.date.toDrift());
+    }
+
+    batch((batch) => batch.replaceAll(entries, records));
+  }
+
   Future deleteEntry(Entry model) async {
     final entity = await (select(entries)
           ..where((tbl) => tbl.id.equals(model.id)))
@@ -74,21 +83,23 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
   }
 
   Future<List<EntryEntity>> allEntries() {
-    return (select(entries)..where((tbl) => tbl.isIncome.equals(true))).get();
+    //
+    final date = DateTime.now().onlyDate().toDrift();
+    return (select(entries)..where((tbl) => tbl.date.equals(date))).get();
   }
 
-  Future<List<EntryEntity>> getExpences() {
+  Future<List<EntryEntity>> getExpenses() {
     var todayDate = DateTime.now();
-    final firstday = DateTime.utc(todayDate.year, todayDate.month, 1);
+    final firstDay = DateTime.utc(todayDate.year, todayDate.month, 1);
     return (select(entries)
           ..where((tbl) =>
-              tbl.date.isBiggerOrEqualValue(firstday) &
+              tbl.date.isBiggerOrEqualValue(firstDay) &
               tbl.isIncome.equals(false)))
         .get();
   }
 
-  Future<List<EntryEntity>> getDailyExpences(DateTime value) {
-    final date = value.toUtc();
+  Future<List<EntryEntity>> getDailyExpenses(DateTime date) {
+    // final date = value.toUtc();
     return (select(entries)
           ..where((tbl) {
             final tblDate = tbl.date;
@@ -100,8 +111,8 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
         .get();
   }
 
-  Stream<List<EntryEntity>> dailyExpencesStraem(DateTime value) {
-    final date = value.toUtc();
+  Stream<List<EntryEntity>> dailyExpensesStream(DateTime date) {
+    // final date = value.toUtc();
     return (select(entries)
           ..where((tbl) {
             final tblDate = tbl.date;
@@ -113,8 +124,8 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
         .watch();
   }
 
-  Future<Map<DateTime, int>> getWeeklyExpences(DateTime date) async {
-    final weekStart = date; // .startOfWeek().onlyDate()
+  Future<Map<DateTime, int>> getWeeklyExpenses(DateTime date) async {
+    final weekStart = date.startOfWeek().onlyDate();
     final weekEnd = date.endOfWeek().onlyDate();
     final entities = await periodEntries(weekStart, weekEnd).get();
 
@@ -130,10 +141,15 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
   //
   Stream<List<ExpenseCategory>> watchStatistics() {
     final DateTime base = DateTime.now().onlyDate();
-    final date = base.toUtc();
-    final weekStart = base.startOfWeek().toUtc();
-    final weekEnd = base.endOfWeek().toUtc();
-    final firstOfMonth = DateTime(base.year, base.month, 1);
+    // final date = base.toUtc();
+    // final weekStart = base.startOfWeek().toUtc();
+    // final weekEnd = base.endOfWeek().toUtc();
+
+    final date = base.toDrift();
+    final weekStart = base.startOfWeek().toDrift();
+    final weekEnd = base.endOfWeek().toDrift();
+
+    final firstOfMonth = DateTime(base.year, base.month, 1).toDrift();
 
     return customSelect(
       '''SELECT 
@@ -262,10 +278,10 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
           ];
   }
 
-  Future<List<WeekExpnces>> monthWeeksExpenses(int year, int month) async {
+  Future<List<WeekExpenses>> monthWeeksExpenses(int year, int month) async {
     final date = DateTime(year, month, 1);
-    final weeks = date.monthWeaks();
-    final List<WeekExpnces> data = [];
+    final weeks = date.monthWeeks();
+    final List<WeekExpenses> data = [];
     int i = 1;
 
     for (final week in weeks) {
@@ -297,7 +313,7 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
       //   print('${formatter.dayOfDate(aa.date)}\t${aa.amount}');
       // }
 
-      final expense = WeekExpnces(
+      final expense = WeekExpenses(
         index: i,
         days: aaa, // week.map((e) => DateSummary(date: e, amount: 0)).toList(),
         expenses: weekSum,
@@ -334,7 +350,7 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
     final data = result
         .map((e) => DailySpending(
             date: e.readTable(entries).date,
-            spendings: max(e.read(sumOfDay) ?? 0, 0)))
+            spending: max(e.read(sumOfDay) ?? 0, 0)))
         .toList();
     return data;
   }
@@ -371,14 +387,14 @@ class EntryDAO extends DatabaseAccessor<AppDatabase> with _$EntryDAOMixin {
                 .firstWhereOrNull((element) => element.isIncome == true)
                 ?.spending ??
             0,
-        spendings: data
+        spending: data
                 .firstWhereOrNull((element) => element.isIncome == false)
                 ?.spending ??
             0);
     return newData;
   }
 
-  Stream<List<EntryEntity>> monthlyIncomeStraem() {
+  Stream<List<EntryEntity>> monthlyIncomeStream() {
     final date = DateTime.now();
     return (select(entries)
           ..where((tbl) {

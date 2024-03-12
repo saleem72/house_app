@@ -2,10 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/models/entry.dart';
-import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/domain/models/entry.dart';
+import 'package:house_app/core/domain/use_cases/date_formatter.dart';
+import 'package:house_app/core/presentation/blocs/locale_bloc/locale_bloc.dart';
 import 'package:house_app/core/presentation/widgets/core_widgets.dart';
-import 'package:house_app/dependancy_injection.dart' as di;
+import 'package:house_app/dependency_injection.dart' as di;
 import 'package:house_app/features/daily_summary_screen/presentation/daily_summary_bloc/daily_summary_bloc.dart';
 
 class DailySummaryScreen extends StatelessWidget {
@@ -34,9 +35,10 @@ class _DailySummaryScreen extends StatelessWidget {
   final DateTime date;
   @override
   Widget build(BuildContext context) {
+    final locale = context.read<LocaleBloc>().state.appLang;
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppFormatter().date(date)),
+        title: Text(AppFormatter().arabicDate(date, locale: locale)),
       ),
       body: BlocBuilder<DailySummaryBloc, DailySummaryState>(
         builder: (context, state) {
@@ -57,7 +59,7 @@ class _DailySummaryScreen extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-              child: EntrisGrid(
+              child: EntriesGrid(
             entries: entries,
             onDeletion: (entry) {},
           )),

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/helpers/safe/safe.dart';
+import 'package:house_app/core/domain/helpers/safe/safe.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:house_app/core/presentation/blocs/locale_bloc/locale_bloc.dart';
 import 'package:house_app/core/presentation/widgets/core_widgets.dart';

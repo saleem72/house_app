@@ -12,7 +12,7 @@ final class MonthlyInitial extends MonthlyState {}
 final class MonthlyLoading extends MonthlyState {}
 
 final class MonthlySuccess extends MonthlyState {
-  final List<WeekExpnces> weeks;
+  final List<WeekExpenses> weeks;
 
   const MonthlySuccess({required this.weeks});
 

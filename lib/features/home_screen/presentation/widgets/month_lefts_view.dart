@@ -1,9 +1,9 @@
 //
 
 import 'package:flutter/material.dart';
-import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/domain/use_cases/date_formatter.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
-import 'package:house_app/features/home_screen/domian/models/monthly_statistics.dart';
+import 'package:house_app/features/home_screen/domain/models/monthly_statistics.dart';
 
 class MonthLeftsView extends StatelessWidget {
   const MonthLeftsView({

@@ -2,7 +2,7 @@
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:house_app/core/domian/models/daily_spending.dart';
+import 'package:house_app/core/domain/models/daily_spending.dart';
 
 class MonthlyChart extends StatelessWidget {
   const MonthlyChart({
@@ -13,7 +13,7 @@ class MonthlyChart extends StatelessWidget {
   final List<DailySpending> status;
 
   List<FlSpot> get spots => status
-      .map((e) => FlSpot(e.day.toDouble(), e.spendings.toDouble()))
+      .map((e) => FlSpot(e.day.toDouble(), e.spending.toDouble()))
       .toList();
 
   SideTitles leftTitles() => SideTitles(

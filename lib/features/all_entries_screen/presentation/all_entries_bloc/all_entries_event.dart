@@ -9,6 +9,8 @@ sealed class AllEntriesEvent extends Equatable {
 
 final class AllEntriesFetchDataEvent extends AllEntriesEvent {}
 
+final class AllEntriesFixDatesEvent extends AllEntriesEvent {}
+
 final class AllEntriesDeleteEntryEvent extends AllEntriesEvent {
   final Entry entry;
   const AllEntriesDeleteEntryEvent({required this.entry});
@@ -29,6 +31,6 @@ final class AllEntriesInsertListForMonthEvent extends AllEntriesEvent {
   List<Object> get props => [date];
 }
 
-final class AllEntriesDailySpendingsEvent extends AllEntriesEvent {}
+final class AllEntriesDailySpendingEvent extends AllEntriesEvent {}
 
-final class AllEntriesCompareFuncsEvent extends AllEntriesEvent {}
+final class AllEntriesCompareFuncEvent extends AllEntriesEvent {}

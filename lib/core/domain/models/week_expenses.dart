@@ -1,13 +1,13 @@
 //
 
-import 'package:house_app/core/domian/models/date_summary.dart';
+import 'package:house_app/core/domain/models/date_summary.dart';
 
-class WeekExpnces {
+class WeekExpenses {
   final int index;
   final List<DateSummary> days;
   final int expenses;
 
-  WeekExpnces({
+  WeekExpenses({
     required this.index,
     required this.days,
     required this.expenses,

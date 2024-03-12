@@ -18,4 +18,6 @@ final class _HomeNewListEvent extends StatisticEvent {
   List<Object> get props => [expenses];
 }
 
-final class _HomeFetchDailySpendingsEvent extends StatisticEvent {}
+final class _HomeFetchDailySpendingEvent extends StatisticEvent {}
+
+final class StatisticTestDataEvent extends StatisticEvent {}

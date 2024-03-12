@@ -1,8 +1,8 @@
 //
 
 import 'package:flutter/material.dart';
-import 'package:house_app/core/domian/models/entry.dart';
-import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/domain/models/entry.dart';
+import 'package:house_app/core/domain/use_cases/date_formatter.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:house_app/core/presentation/widgets/core_widgets.dart';
@@ -10,8 +10,8 @@ import 'package:house_app/core/presentation/widgets/core_widgets.dart';
 import 'confirmation_alert.dart';
 import 'expense_tile.dart';
 
-class EntrisGrid extends StatelessWidget {
-  const EntrisGrid({
+class EntriesGrid extends StatelessWidget {
+  const EntriesGrid({
     super.key,
     required this.entries,
     required this.onDeletion,

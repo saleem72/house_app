@@ -4,9 +4,9 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/models/daily_spending.dart';
-import 'package:house_app/core/domian/models/month_total.dart';
-import 'package:house_app/core/domian/models/week_expnces.dart';
+import 'package:house_app/core/domain/models/daily_spending.dart';
+import 'package:house_app/core/domain/models/month_total.dart';
+import 'package:house_app/core/domain/models/week_expenses.dart';
 import 'package:house_app/features/history/domain/repository/i_history_repository.dart';
 
 part 'history_event.dart';

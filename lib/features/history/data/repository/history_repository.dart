@@ -2,9 +2,9 @@
 
 import 'package:house_app/core/data/local_db/app_database.dart';
 import 'package:house_app/core/data/local_db/daos/entry_dao/entry_dao.dart';
-import 'package:house_app/core/domian/models/daily_spending.dart';
-import 'package:house_app/core/domian/models/month_total.dart';
-import 'package:house_app/core/domian/models/week_expnces.dart';
+import 'package:house_app/core/domain/models/daily_spending.dart';
+import 'package:house_app/core/domain/models/month_total.dart';
+import 'package:house_app/core/domain/models/week_expenses.dart';
 import 'package:house_app/features/history/domain/models/history_data_model.dart';
 import 'package:house_app/features/history/domain/repository/i_history_repository.dart';
 
@@ -15,7 +15,7 @@ class HistoryRepository implements IHistoryRepository {
     required AppDatabase db,
   }) : _dao = db.entryDAO;
 
-  Future<List<WeekExpnces>> _fetchExpnces(DateTime date) async {
+  Future<List<WeekExpenses>> _fetchExpnces(DateTime date) async {
     final expenses = await _dao.monthWeeksExpenses(date.year, date.month);
 
     return expenses;
@@ -42,7 +42,7 @@ class HistoryRepository implements IHistoryRepository {
       for (var i = 1; i < lastDay + 1; i++) {
         if (!days.contains(i)) {
           data.add(DailySpending(
-              date: DateTime(date.year, date.month, i), spendings: 0));
+              date: DateTime(date.year, date.month, i), spending: 0));
         }
       }
       data.sort((a, b) {

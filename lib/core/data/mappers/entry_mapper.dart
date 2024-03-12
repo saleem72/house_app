@@ -1,7 +1,7 @@
 //
 
 import 'package:house_app/core/data/local_db/app_database.dart';
-import 'package:house_app/core/domian/models/entry.dart';
+import 'package:house_app/core/domain/models/entry.dart';
 import 'package:house_app/core/extensions/date_time_extension.dart';
 
 class EntryMapper {

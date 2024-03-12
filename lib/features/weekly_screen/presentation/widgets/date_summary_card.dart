@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_app/configuration/routing/app_screens.dart';
-import 'package:house_app/core/domian/models/date_summary.dart';
-import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/domain/models/date_summary.dart';
+import 'package:house_app/core/domain/use_cases/date_formatter.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:house_app/core/presentation/blocs/locale_bloc/locale_bloc.dart';
 
@@ -23,9 +23,15 @@ class DateSummaryCard extends StatelessWidget {
       onTap: () => context.navigator
           .pushNamed(AppScreens.dailySummary, arguments: entry.date),
       child: Card(
+        color: Colors.white,
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Container(
-          margin: const EdgeInsets.all(8),
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: Column(
             children: [
               Row(

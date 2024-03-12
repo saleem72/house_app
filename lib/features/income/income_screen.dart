@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/models/entry.dart';
+import 'package:house_app/core/domain/models/entry.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:house_app/core/presentation/widgets/add_new_entry_dialog.dart';
-import 'package:house_app/core/presentation/widgets/entris_grid.dart';
-import 'package:house_app/dependancy_injection.dart' as di;
+import 'package:house_app/core/presentation/widgets/entries_grid.dart';
+import 'package:house_app/dependency_injection.dart' as di;
 
 import 'presentation/income_bloc/income_bloc.dart';
 
@@ -65,7 +65,7 @@ class IncomeScreenContent extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-              child: EntrisGrid(
+              child: EntriesGrid(
             entries: entries,
             // onDeletion: (entry) {},
             onDeletion: (entry) => context

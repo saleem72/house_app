@@ -3,7 +3,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/helpers/safe/safe.dart';
+import 'package:house_app/core/domain/helpers/safe/safe.dart';
 
 part 'locale_event.dart';
 part 'locale_state.dart';

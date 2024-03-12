@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:house_app/core/domian/models/entry.dart';
+import 'package:house_app/core/domain/models/entry.dart';
 import 'package:house_app/core/extensions/date_time_extension.dart';
 import 'package:house_app/features/daily_screen/domain/repository/i_daily_repository.dart';
 

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
-import 'package:house_app/dependancy_injection.dart' as di;
+import 'package:house_app/dependency_injection.dart' as di;
 import 'package:house_app/features/history/presentation/history_bloc/history_bloc.dart';
 import 'package:house_app/features/history/presentation/widgets/history_finance_view.dart';
 import 'package:house_app/features/home_screen/presentation/widgets/monthly_chart.dart';
@@ -55,7 +55,7 @@ class HistoryScreenContent extends StatelessWidget {
         children: [
           const SizedBox(height: 8),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 0),
             child: HistoryFinanceView(statistics: state.statistics),
           ),
           Expanded(

@@ -3,7 +3,7 @@
 
 import 'package:house_app/core/data/local_db/app_database.dart';
 import 'package:house_app/core/data/local_db/daos/entry_dao/entry_dao.dart';
-import 'package:house_app/core/domian/models/date_summary.dart';
+import 'package:house_app/core/domain/models/date_summary.dart';
 import 'package:house_app/features/weekly_screen/domain/repository/i_weekly_repository.dart';
 
 class WeeklyRepository implements IWeeklyRepository {
@@ -13,7 +13,7 @@ class WeeklyRepository implements IWeeklyRepository {
   }) : _dao = db.entryDAO;
   @override
   Future<List<DateSummary>> fetchData(DateTime date) async {
-    var daysMap = await _dao.getWeeklyExpences(date);
+    var daysMap = await _dao.getWeeklyExpenses(date);
 
     final result = daysMap
         .map((key, value) =>

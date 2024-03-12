@@ -4,11 +4,11 @@
 import 'package:house_app/core/data/local_db/app_database.dart';
 import 'package:house_app/core/data/local_db/daos/entry_dao/entry_dao.dart';
 import 'package:house_app/core/data/mappers/entry_mapper.dart';
-import 'package:house_app/core/domian/models/daily_spending.dart';
-import 'package:house_app/core/domian/models/entry.dart';
-import 'package:house_app/core/domian/models/week_expnces.dart';
+import 'package:house_app/core/domain/models/daily_spending.dart';
+import 'package:house_app/core/domain/models/entry.dart';
+import 'package:house_app/core/domain/models/week_expenses.dart';
 
-import '../../../home_screen/domian/models/button_category.dart';
+import '../../../home_screen/domain/models/button_category.dart';
 
 class AllEntriesRepository {
   final EntryDAO _dao;
@@ -41,12 +41,16 @@ class AllEntriesRepository {
     return data;
   }
 
-  Future<List<WeekExpnces>> getMonth(int year, int month) async {
+  Future<List<WeekExpenses>> getMonth(int year, int month) async {
     final data = await _dao.monthWeeksExpenses(year, month);
     return data;
   }
 
-  Future deleleEntry(Entry entry) async {
+  Future deleteEntry(Entry entry) async {
     final _ = await _dao.deleteEntry(entry);
+  }
+
+  Future fixDates() async {
+    await _dao.fixDates();
   }
 }

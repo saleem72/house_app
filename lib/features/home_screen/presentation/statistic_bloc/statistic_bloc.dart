@@ -4,10 +4,10 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/models/daily_spending.dart';
-import 'package:house_app/features/home_screen/domian/models/monthly_statistics.dart';
+import 'package:house_app/core/domain/models/daily_spending.dart';
+import 'package:house_app/features/home_screen/domain/models/monthly_statistics.dart';
 
-import '../../domian/repository/i_home_repository.dart';
+import '../../domain/repository/i_home_repository.dart';
 
 part 'statistic_event.dart';
 part 'statistic_state.dart';
@@ -21,14 +21,15 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
         super(StatisticState.initial()) {
     on<HomeSubscribeEvent>(_onSubscribe);
     on<_HomeNewListEvent>(_onNewList);
-    on<_HomeFetchDailySpendingsEvent>(_onFetchDailySpendings);
+    on<_HomeFetchDailySpendingEvent>(_onFetchDailySpending);
+    on<StatisticTestDataEvent>(_onTestData);
   }
 
   FutureOr<void> _onSubscribe(
       HomeSubscribeEvent event, Emitter<StatisticState> emit) {
-    _subscription = _repository.subcribe().listen((event) {
+    _subscription = _repository.subscribe().listen((event) {
       add(_HomeNewListEvent(expenses: event));
-      add(_HomeFetchDailySpendingsEvent());
+      add(_HomeFetchDailySpendingEvent());
     });
   }
 
@@ -44,9 +45,17 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
     return super.close();
   }
 
-  FutureOr<void> _onFetchDailySpendings(
-      _HomeFetchDailySpendingsEvent event, Emitter<StatisticState> emit) async {
+  FutureOr<void> _onFetchDailySpending(
+      _HomeFetchDailySpendingEvent event, Emitter<StatisticState> emit) async {
     final data = await _repository.sumDayInEntries();
-    emit(state.copyWith(dailySpendings: data));
+    emit(state.copyWith(dailySpending: data));
+  }
+
+  FutureOr<void> _onTestData(
+      StatisticTestDataEvent event, Emitter<StatisticState> emit) async {
+    // final records = await _repository.testData();
+    // for (var record in records) {
+    //   print(record);
+    // }
   }
 }

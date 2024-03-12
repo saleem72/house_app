@@ -1,8 +1,8 @@
 //
 
 import 'package:flutter/material.dart';
-import 'package:house_app/core/domian/models/month_total.dart';
-import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/domain/models/month_total.dart';
+import 'package:house_app/core/domain/use_cases/date_formatter.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 
 class HistoryFinanceView extends StatelessWidget {
@@ -37,33 +37,42 @@ class HistoryFinanceView extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 2,
-                  child: Text(
-                    context.translate.income,
-                    textAlign: TextAlign.center,
-                    style: context.textTheme.titleMedium?.copyWith(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Expanded(
-                    flex: 2,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     child: Text(
-                      context.translate.spending,
+                      context.translate.income,
                       textAlign: TextAlign.center,
                       style: context.textTheme.titleMedium?.copyWith(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                    flex: 2,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        context.translate.spending,
+                        textAlign: TextAlign.center,
+                        style: context.textTheme.titleMedium?.copyWith(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     )),
                 Expanded(
                     flex: 2,
-                    child: Text(
-                      context.translate.left,
-                      textAlign: TextAlign.center,
-                      style: context.textTheme.titleMedium?.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        context.translate.left,
+                        textAlign: TextAlign.center,
+                        style: context.textTheme.titleMedium?.copyWith(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     )),
               ],
@@ -73,26 +82,34 @@ class HistoryFinanceView extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 2,
-                  child: Text(
-                    formatter.currency(statistics.income),
-                    textAlign: TextAlign.center,
-                    style: context.textTheme.titleMedium?.copyWith(
-                      fontSize: 18,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      formatter.currency(statistics.income),
+                      textAlign: TextAlign.center,
+                      style: context.textTheme.titleMedium?.copyWith(
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
                     flex: 2,
-                    child: Text(
-                      formatter.currency(statistics.spendings),
-                      textAlign: TextAlign.center,
-                      style: context.textTheme.titleMedium?.copyWith(
-                        fontSize: 18,
-                        // fontWeight: FontWeight.w600,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        formatter.currency(statistics.spending),
+                        textAlign: TextAlign.center,
+                        style: context.textTheme.titleMedium?.copyWith(
+                          fontSize: 18,
+                          // fontWeight: FontWeight.w600,
+                        ),
                       ),
                     )),
                 Expanded(
-                    flex: 2,
+                  flex: 2,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                     child: Text(
                       formatter.currency(statistics.left),
                       textAlign: TextAlign.center,
@@ -100,7 +117,9 @@ class HistoryFinanceView extends StatelessWidget {
                         fontSize: 18,
                         // fontWeight: FontWeight.w600,
                       ),
-                    )),
+                    ),
+                  ),
+                ),
               ],
             ),
           ],

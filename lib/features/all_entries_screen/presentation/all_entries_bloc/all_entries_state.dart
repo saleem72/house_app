@@ -30,16 +30,16 @@ final class AllEntriesSpending extends AllEntriesState {
 }
 
 final class AllEntriesDailySpending extends AllEntriesState {
-  final List<DailySpending> spendings;
+  final List<DailySpending> spending;
 
-  const AllEntriesDailySpending({required this.spendings});
+  const AllEntriesDailySpending({required this.spending});
 
   @override
-  List<Object> get props => [spendings];
+  List<Object> get props => [spending];
 }
 
 final class AllEntriesMonthExpenses extends AllEntriesState {
-  final List<WeekExpnces> expenses;
+  final List<WeekExpenses> expenses;
 
   const AllEntriesMonthExpenses({required this.expenses});
 

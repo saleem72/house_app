@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:house_app/core/domian/models/entry.dart';
-import 'package:house_app/core/domian/usecases/date_formatter.dart';
+import 'package:house_app/core/domain/models/entry.dart';
+import 'package:house_app/core/domain/use_cases/date_formatter.dart';
 import 'package:house_app/core/extensions/build_context_extension.dart';
 import 'package:house_app/core/presentation/blocs/add_entry_bloc/add_entry_bloc.dart';
-import 'package:house_app/dependancy_injection.dart' as di;
+import 'package:house_app/dependency_injection.dart' as di;
 
-import '../../domian/input_formatters/currency_formatter.dart';
+import '../../domain/input_formatters/currency_formatter.dart';
 import 'core_widgets.dart';
 
 class AddNewEntryProvider extends StatelessWidget {

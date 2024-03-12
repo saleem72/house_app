@@ -14,15 +14,15 @@ class MonthSummaryEntry {
 class MonthTotal extends Equatable {
   final DateTime date;
   final int income;
-  final int spendings;
+  final int spending;
   const MonthTotal({
     required this.date,
     required this.income,
-    required this.spendings,
+    required this.spending,
   });
 
-  int get left => income - spendings;
+  int get left => income - spending;
 
   @override
-  List<Object?> get props => [date, income, spendings];
+  List<Object?> get props => [date, income, spending];
 }

@@ -34,11 +34,18 @@ class _HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFDEBF9),
+        // backgroundColor: const Color(0xFFFDEBF9),
         title: Text(
           context.translate.home,
           style: context.textTheme.titleLarge?.copyWith(color: Colors.black),
         ),
+        actions: [
+          IconButton(
+            onPressed: () =>
+                context.read<StatisticBloc>().add(StatisticTestDataEvent()),
+            icon: const Icon(Icons.update),
+          ),
+        ],
       ),
       body: BlocBuilder<StatisticBloc, StatisticState>(
         builder: (context, state) {
@@ -97,7 +104,7 @@ class _HomeScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.only(
                     top: 32, left: 8, right: 8, bottom: 48),
-                child: MonthlyChart(status: status.dailySpendings),
+                child: MonthlyChart(status: status.dailySpending),
               ),
             ),
           ),
