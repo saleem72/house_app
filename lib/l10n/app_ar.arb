@@ -24,7 +24,7 @@
     "ok": "موافق",
     "week_no": "رقم الاسبوع",
     "warning": "تحذير",
-    "deletion_confim_message": "هل انت متأكد انك تريد حذف هذا",
+    "deletion_confirm_message": "هل انت متأكد انك تريد حذف هذا",
     "speech_error": "ميزة التعرف على الصوت",
     "speech_error_message": "عذراً حدث خطأ اثناء تفعيل ميزة التعرف على الصوت\nالرجاء المحاولة لاحقاً",
     "drawer_header": "ميزانيتك",

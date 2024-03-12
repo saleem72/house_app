@@ -46,7 +46,7 @@ class ConfirmationAlert extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    context.translate.deletion_confim_message,
+                    context.translate.deletion_confirm_message,
                     style: context.textTheme.titleMedium?.copyWith(
                         // color: context.colorScheme.onPrimary,
                         ),
